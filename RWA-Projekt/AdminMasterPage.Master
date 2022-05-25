@@ -1,0 +1,64 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="AdminMasterPage.master.cs" Inherits="RWA_Projekt.AdminMasterPage" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="Head" runat="server">
+    </asp:ContentPlaceHolder>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="//cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css" rel="stylesheet" />
+</head>
+<body>
+    <form id="Web_app" runat="server">
+        <nav class='navbar navbar-expand-lg navbar-light bg-light'>
+            <div class='container-fluid'>
+                <a class='navbar-brand' href='/'>RWA Apartments Admin</a>
+                <button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
+                    <span class='navbar-toggler-icon'></span>
+                </button>
+                <div class='collapse navbar-collapse' id='navbarSupportedContent'>
+                    <ul class='navbar-nav me-auto mb-2 mb-lg-0'>
+                        <li class='nav-item'>
+                            <a class='nav-link' href='AdministratorApartments.aspx' runat="server" meta:resourcekey="aLogin">Apartments</a>
+                        </li>
+                        <li class='nav-item'>
+                            <a class='nav-link' href='AdministratorTags.aspx' runat="server" meta:resourcekey="aRegistration">Tags</a>
+                        </li>
+                        <li class='nav-item'>
+                            <a class='nav-link' href='AdministratorRegisteredUsers.aspx' runat="server" meta:resourcekey="aRegisteredUsers">Registered users</a>
+                        </li>
+                    </ul>
+                    <ul class='navbar-nav d-flex'>
+                        <li class='nav-item'>
+                            <asp:Button class='nav-link btn btn-danger text-white' ID="btnLogout" meta:resourcekey="btnLogout" runat="server" Text="Logout" OnClick="btnLogout_Click" />
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+        <div>
+            <asp:ContentPlaceHolder ID="Content" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <hr class='mt-4'>
+        <div class='text-center'>
+            <p>Fran Gregec- <%: DateTime.Now.Year %> &copy;</p>
+        </div>
+    </form>
+    <script src="Scripts/jquery-3.6.0.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="//cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
+
+    <script>    
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+    </script>
+
+
+</body>
+</html>
