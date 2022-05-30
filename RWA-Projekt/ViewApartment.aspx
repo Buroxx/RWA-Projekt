@@ -4,37 +4,37 @@
     <link href="CSS/ImageGalery.css" rel="stylesheet" />
     <title id="title"></title>
     <style>
-        .container {
-            margin-bottom: 50px;
-        }
-
-        .buttons {
-            margin-top: 50px;
+        .left {
+            margin-left: 10px;
         }
 
         .registered {
-            margin-top: 50px;
-            width: 80%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .gv {
-            margin-top: 50px;
-            width: 50%;
+        .paginate_button {
+            position: static;
+            font-weight: normal;
+            font-size: inherit;
         }
-        .unregistered{
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            margin-top:50px;
-            flex-direction:column;
-            width:100%;
+
+        .tablica {
+            border: none;
         }
     </style>
 </asp:Content>
+
+
+
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
 
 
-    <div class="container">
+
+
+    <%-- INFO PANEL --%>
+    <div class="container d-flex h-75" style="width: 800px">
         <asp:Repeater ID="rptImgs" runat="server">
             <ItemTemplate>
                 <div class="mySlides">
@@ -45,73 +45,132 @@
         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
         <a class="next" onclick="plusSlides(1)">&#10095;</a>
     </div>
-    <asp:Label runat="server" ID="lblName" Text="Apartment name: " />
-    <asp:TextBox ID="tbName" runat="server"></asp:TextBox>
 
-    <asp:Label runat="server" ID="lblPrice" Text="Price: " />
-    <asp:TextBox ID="tbPrice" runat="server"></asp:TextBox>
 
-    <asp:Label runat="server" ID="lblCity" Text="City: " />
-    <asp:TextBox ID="tbCity" runat="server"></asp:TextBox>
+    <asp:Panel runat="server" ID="pnlInfoForm" Visible="true">
+        <div class=" d-flex justify-content-center gap-4 ">
 
-    <asp:Label runat="server" ID="lblAdults" Text="Adult rooms: " />
-    <asp:TextBox ID="tbAdults" runat="server"></asp:TextBox>
+            <div class="py-2">
+                <asp:Label runat="server" ID="lblName" Text="Apartment name: " />
+                <asp:TextBox ID="tbName" runat="server" CssClass="form-control"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvName" runat="server" ErrorMessage="Apartment name is empty!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbName" Display="Dynamic"></asp:RequiredFieldValidator>
+            </div>
 
-    <asp:Label runat="server" ID="lblChildren" Text="Children rooms: " />
-    <asp:TextBox ID="tbChildren" runat="server"></asp:TextBox>
 
-    <asp:Label runat="server" ID="lblRooms" Text="Total rooms: " />
-    <asp:TextBox ID="tbRooms" runat="server"></asp:TextBox>
-    <asp:Label runat="server" ID="lbStatus" Text="Status: " />
-    <asp:DropDownList ID="ddlStatus" runat="server" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+            <div class="py-2">
+                <asp:Label runat="server" ID="lblCity" Text="Price(€):" />
+                <asp:TextBox ID="tbPrice" runat="server" CssClass="form-control" TextMode="Number"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvPrice" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbPrice" Display="Dynamic"></asp:RequiredFieldValidator>
+            </div>
+        </div>
 
-    <div class="buttons">
-        <asp:Panel ID="pnlOption" runat="server">
-            <asp:Button ID="btnRegistered" runat="server" Text="Registered user" OnClick="btnRegistered_Click" />
-            <asp:Button ID="btnUnregistered" runat="server" Text="Unregistered user" OnClick="btnUnregistered_Click" />
+        <div class="d-flex justify-content-center mt-2 gap-4 align-align-items-center">
+
+            <div>
+                <asp:Label runat="server" ID="lblAdults" Text="Adult rooms:" />
+                <asp:TextBox ID="tbAdults" runat="server" Width="50px" CssClass="form-control" TextMode="Number"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvAdults" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbAdults" Display="Dynamic"></asp:RequiredFieldValidator>
+            </div>
+
+            <div>
+                <asp:Label runat="server" ID="lblChildren" Text="Children rooms:" />
+                <asp:TextBox ID="tbChildren" runat="server" Width="50px" CssClass="form-control" TextMode="Number"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvChildren" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbChildren" Display="Dynamic"></asp:RequiredFieldValidator>
+            </div>
+
+            <div>
+                <asp:Label runat="server" ID="lblRooms" Text="Total rooms:" />
+                <asp:TextBox ID="tbRooms" runat="server" Width="50px" CssClass="form-control" TextMode="Number"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvRooms" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbRooms" Display="Dynamic"></asp:RequiredFieldValidator>
+            </div>
+            <div>
+                <asp:Label runat="server" ID="Label7" Text="Beach distance: " />
+                <asp:TextBox ID="tbBeachDistance" runat="server" Width="60px" CssClass="form-control" TextMode="Number"></asp:TextBox>
+                <asp:RequiredFieldValidator ID="rfvBeach" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbBeachDistance" Display="Dynamic"></asp:RequiredFieldValidator>
+            </div>
+        </div>
+
+    </asp:Panel>
+
+    <%-- BAD FORM --%>
+    <asp:Panel ID="pnlBadForm" runat="server" Visible="false">
+        <div class='alert alert-danger' role='alert'>
+            <asp:Label ID="lblErrorLogin" runat="server" Text="Check the entered data again!" Font-Bold="True" ForeColor="Red"></asp:Label>
+        </div>
+    </asp:Panel>
+
+
+    <%-- BUTTONS SAVE CANCEL --%>
+    <asp:Panel runat="server" ID="pnlSaveCancel">
+        <div class="d-flex justify-content-center mt-2 gap-2">
+            <asp:Button ID="btnSave" runat="server" Text=" Save " CssClass="btn btn-success" Font-Bold="True" OnClick="btnSave_Click" />
+            <asp:Button ID="btnResetForm" runat="server" Text="Reset " CssClass="btn btn-dark" Font-Bold="True" OnClick="btnResetForm_Click" />
+            <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-warning" Font-Bold="True" OnClick="btnCancel_Click" />
+        </div>
+    </asp:Panel>
+
+    <%-- STATUS --%>
+    <div class="d-flex justify-content-center mt-2 gap-4 align-align-items-center">
+        <asp:Label runat="server" ID="lbStatus" Text="Status: " />
+        <asp:DropDownList ID="ddlStatus" runat="server" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged" AutoPostBack="true" CssClass="left form-control"></asp:DropDownList>
+    </div>
+
+
+
+
+    <%-- BUTTONS --%>
+    <div class="d-flex justify-content-center mt-2">
+        <asp:Panel ID="pnlOption" runat="server" Visible="false">
+            <asp:Button ID="btnRegistered" runat="server" Text="Registered user" OnClick="btnRegistered_Click" CssClass="btn btn-secondary" Font-Bold="True" />
+            <asp:Button ID="btnUnregistered" runat="server" Text="Unregistered user" OnClick="btnUnregistered_Click" CssClass="btn btn-secondary" Font-Bold="True" />
         </asp:Panel>
     </div>
+
+
 
 
     <%-- BUTTON REGISTERED --%>
-    <div class="registered">
-        <asp:Panel ID="pnlRegistered" runat="server">
-            <asp:Repeater ID="rptUsers" runat="server">
-                <HeaderTemplate>
-                    <table class="table" id="myTable" style="width: max-content">
-                        <thead>
-                            <tr>
-                                <th scope="col">First name</th>
-                                <th scope="col">Last name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Phone number</th>
-                                <th scope="col">Address</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                </HeaderTemplate>
-                <ItemTemplate>
-                    <tr>
-                        <th scope="row"><%#Eval(nameof(rwaLib.Models.User.FirstName))%></th>
-                        <td><%#Eval(nameof(rwaLib.Models.User.LastName))%></td>
-                        <td><%#Eval(nameof(rwaLib.Models.User.Email))%></td>
-                        <td><%#Eval(nameof(rwaLib.Models.User.PhoneNumber))%></td>
-                        <td><%#Eval(nameof(rwaLib.Models.User.Address))%></td>
-                        <td>
-                            <asp:LinkButton OnClick="PickPerson_Click" CommandArgument="<%# Eval(nameof(rwaLib.Models.User.Id)) %>" ID="PickPerson" runat="server">Pick</asp:LinkButton></td>
-                    </tr>
-                </ItemTemplate>
-                <FooterTemplate>
-                    </tbody>
+    <asp:Panel ID="pnlRegistered" runat="server">
+        <div class="container mt-2 d-flex justify-content-center">
+            <div>
+                <asp:Repeater ID="rptUsers" runat="server">
+                    <HeaderTemplate>
+                        <table class="table table-striped" id="myTable" style="width: 1000px">
+                            <thead>
+                                <tr>
+                                    <th scope="col">First name</th>
+                                    <th scope="col">Last name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Phone number</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <tr>
+                            <th scope="row"><%#Eval(nameof(rwaLib.Models.User.FirstName))%></th>
+                            <td><%#Eval(nameof(rwaLib.Models.User.LastName))%></td>
+                            <td><%#Eval(nameof(rwaLib.Models.User.Email))%></td>
+                            <td><%#Eval(nameof(rwaLib.Models.User.PhoneNumber))%></td>
+                            <td><%#Eval(nameof(rwaLib.Models.User.Address))%></td>
+                            <td>
+                                <asp:LinkButton OnClick="PickPerson_Click" CommandArgument="<%# Eval(nameof(rwaLib.Models.User.Id)) %>" ID="PickPerson" runat="server">Pick</asp:LinkButton>
+                            </td>
+                        </tr>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        </tbody>
                     </table>
-                </FooterTemplate>
-            </asp:Repeater>
-        </asp:Panel>
+                    </FooterTemplate>
+                </asp:Repeater>
+            </div>
+        </div>
+    </asp:Panel>
 
-    </div>
-    <div class="gv">
-        <asp:GridView ID="gvPickedUser" runat="server" AutoGenerateColumns="false" CssClass="table">
+    <%-- PICKED USER --%>
+        <asp:GridView ID="gvPickedUser" runat="server" AutoGenerateColumns="false" CssClass="d-flex justify-content-center mt-2 table tablica">
             <Columns>
                 <asp:BoundField HeaderText="First name" DataField="FirstName" />
                 <asp:BoundField HeaderText="Last name" DataField="LastName" />
@@ -120,36 +179,226 @@
                 <asp:BoundField HeaderText="Address" DataField="Address" />
             </Columns>
         </asp:GridView>
-    </div>
-
-    <%-- BUTTON UNREGISTERED --%>
-    <asp:Panel ID="pnlUnregistered" runat="server">
-    <div class="unregistered">
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">First name</label>
-            <asp:TextBox ID="tbFirstName" runat="server"></asp:TextBox>
+    <asp:Panel runat="server" ID="pnlRegisteredDetails">
+             <div class="d-flex-column justify-content-center mt-2">
+                <asp:Label runat="server" ID="Label8" Text="Details:" />
+                <asp:TextBox ID="tbRegisteredDetails" runat="server" CssClass="form-control"></asp:TextBox>
+            </div>
+    </asp:Panel>
+    <asp:Panel ID="pnlBtnAddRegisteredUser" runat="server" Visible="false">
+        <div class="d-flex justify-content-center">
+           <asp:Button ID="btnAddRegisteredUser" runat="server" Text="Add user" CssClass="btn btn-success" Font-Bold="True" OnClick="btnAddRegisteredUser_Click" />
         </div>
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Last name</label>
-            <asp:TextBox ID="tbLastName" runat="server"></asp:TextBox>
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email</label>
-            <asp:TextBox ID="tbEmail" runat="server"></asp:TextBox>
-
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Phone number</label>
-            <asp:TextBox ID="tbPhoneNumber" runat="server"></asp:TextBox>
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Address</label>
-            <asp:TextBox ID="tbAddress" runat="server"></asp:TextBox>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
     </asp:Panel>
 
 
+
+    <%-- BUTTON UNREGISTERED --%>
+    <asp:Panel ID="pnlUnregistered" runat="server" Visible="false">
+        <div class="d-flex justify-content-center gap-4 mt-1">
+            <div>
+                <asp:Label runat="server" ID="Label1" Text="First name: " />
+                <asp:TextBox ID="tbFirstName" runat="server" CssClass="form-control"></asp:TextBox>
+                <asp:RequiredFieldValidator ValidationGroup="valGroupUnregistered" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbFirstName" Display="Dynamic"></asp:RequiredFieldValidator>
+                <asp:RegularExpressionValidator ValidationGroup="valGroupUnregistered" Display="Dynamic" ValidationExpression="[a-zA-Z-Š-š-Đ-đ-Ž-ž-Č-č-Ć-ć]+" ID="RegularExpressionValidator2" runat="server" ErrorMessage="Characters only!" Font-Bold="true" ForeColor="red" ControlToValidate="tbFirstName"></asp:RegularExpressionValidator>
+            </div>
+            <div class="mb-3">
+                <asp:Label runat="server" ID="Label2" Text="Last name: " />
+                <asp:TextBox ID="tbLastName" runat="server" CssClass="form-control"></asp:TextBox>
+                <asp:RequiredFieldValidator ValidationGroup="valGroupUnregistered" ID="RequiredFieldValidator2" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbLastName" Display="Dynamic"></asp:RequiredFieldValidator>
+                <asp:RegularExpressionValidator ValidationGroup="valGroupUnregistered" Display="Dynamic" ValidationExpression="[a-zA-Z-Š-š-Đ-đ-Ž-ž-Č-č-Ć-ć]+" ID="RegularExpressionValidator1" runat="server" ErrorMessage="Characters only!" Font-Bold="true" ForeColor="red" ControlToValidate="tbLastName"></asp:RegularExpressionValidator>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center gap-4">
+
+            <div class="mb-3">
+                <asp:Label runat="server" ID="Label3" Text="Email:" />
+                <asp:TextBox ID="tbEmail" runat="server" CssClass="form-control" TextMode="Email"></asp:TextBox>
+                <asp:RequiredFieldValidator ValidationGroup="valGroupUnregistered" ID="RequiredFieldValidator3" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbEmail" Display="Dynamic"></asp:RequiredFieldValidator>
+            </div>
+            <div class="mb-3">
+                <asp:Label runat="server" ID="Label4" Text="Phone number:" />
+                <asp:TextBox ID="tbPhoneNumber" runat="server" CssClass="form-control" TextMode="Number"></asp:TextBox>
+                <asp:RequiredFieldValidator ValidationGroup="valGroupUnregistered" ID="RequiredFieldValidator4" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbPhoneNumber" Display="Dynamic"></asp:RequiredFieldValidator>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center gap-4 mb-3">
+            <div>
+                <asp:Label runat="server" ID="Label5" Text="Address:" />
+                <asp:TextBox ID="tbAddress" runat="server" CssClass="form-control"></asp:TextBox>
+                <asp:RequiredFieldValidator ValidationGroup="valGroupUnregistered" ID="RequiredFieldValidator5" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbAddress" Display="Dynamic"></asp:RequiredFieldValidator>
+            </div>
+            <div>
+                <asp:Label runat="server" ID="Label6" Text="Details:" />
+                <asp:TextBox ID="tbDetails" runat="server" CssClass="form-control"></asp:TextBox>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <asp:Button ValidationGroup="valGroupUnregistered" ID="btnAddUser" runat="server" Text="Pick User" CssClass="btn btn-success" Font-Bold="True" OnClick="btnAddUser_Click" />
+        </div>
+
+
+    </asp:Panel>
+
+
+    <asp:GridView ID="gvAddedUser" runat="server" AutoGenerateColumns="false" CssClass="d-flex justify-content-center mt-2 table tablica">
+        <Columns>
+            <asp:BoundField HeaderText="First name" DataField="FirstName" />
+            <asp:BoundField HeaderText="Last name" DataField="LastName" />
+            <asp:BoundField HeaderText="Email" DataField="Email" />
+            <asp:BoundField HeaderText="Phone number" DataField="PhoneNumber" />
+            <asp:BoundField HeaderText="Address" DataField="Address" />
+        </Columns>
+    </asp:GridView>
+    <asp:Panel runat="server" ID="pnlAddUnregisteredBTN" Visible="false">
+        <div class="d-flex justify-content-center">
+            <asp:Button ID="btnAddUnregisteredUser" runat="server" Text="Add User" CssClass="btn btn-success" Font-Bold="True" OnClick="btnAddUnregisteredUser_Click" />
+        </div>
+    </asp:Panel>
+
+
+
+    <%-- REPRESENT PICS --%>
+
+    <div class="d-flex justify-content-center mt-2 gap-4">
+        <div>
+            <asp:Button ID="btnRepresentative" runat="server" Text="Change representative" CssClass="btn btn-secondary" Font-Bold="True" OnClick="btnRepresentative_Click" />
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-2 gap-4">
+        <asp:Button ID="btnTag" runat="server" Text="Edit tags" CssClass="btn btn-secondary" Font-Bold="True" OnClick="btnTag_Click" />
+    </div>
+
+
+
+    <%-- CHANGE REPRESENTATIVE PANEL --%>
+
+    <asp:Panel ID="pnlRepresentativePictures" runat="server" CssClass="d-flex justify-content-center" Visible="false">
+        <asp:Repeater ID="rptRepresentativePictures" runat="server">
+            <HeaderTemplate>
+                <table class="table-striped" id="" style="width: 450px">
+                    <thead>
+                        <tr>
+                            <th scope="col">Picture</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <td>
+                        <img src="<%#Eval(nameof(rwaLib.Models.ApartmentPicture.Path))%>" style="width: 400px;" />
+                        <asp:LinkButton OnClick="lbRepresentativeChange_Click" CommandArgument="<%# Eval(nameof(rwaLib.Models.ApartmentPicture.Id)) %>" ID="lbRepresentativeChange" runat="server">Pick</asp:LinkButton>
+
+                    </td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                </tbody>
+                    </table>
+            </FooterTemplate>
+        </asp:Repeater>
+    </asp:Panel>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <%-- TAGS + DELETE --%>
+    <asp:Panel ID="pnlTags" runat="server" Visible="false" CssClass="table d-flex justify-content-center">
+        <asp:Repeater ID="rptTags" runat="server">
+            <HeaderTemplate>
+                <table class="table-striped" id="" style="width: 450px">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tag type</th>
+                            <th scope="col">Tag name</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <td><%#Eval(nameof(rwaLib.Models.Tags.TypeName))%></td>
+                    <td><%#Eval(nameof(rwaLib.Models.Tags.NameEng))%></td>
+                    <td>
+                        <asp:Button ID="btnDeleteTag" Text="DELETE" runat="server" CssClass="btn btn-danger" OnClick="btnDeleteTag_Click" CommandArgument="<%# Eval(nameof(rwaLib.Models.Tags.Id)) %>" /></td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                </tbody>
+                    </table>
+            </FooterTemplate>
+        </asp:Repeater>
+    </asp:Panel>
+    <%-- ADD TAGS --%>
+    <asp:Panel ID="pnlButtonAddTag" runat="server" Visible="false">
+        <div class="d-flex justify-content-center">
+            <asp:Button ID="btnAddTag" Text="Add tag" runat="server" CssClass="btn btn-success" Font-Bold="true" OnClick="btnAddTag_Click" />
+        </div>
+    </asp:Panel>
+
+
+    <%-- PICK TAG TO ADD --%>
+
+    <asp:Panel ID="pnlPickNewTag" runat="server" Visible="true" CssClass="table d-flex justify-content-center">
+        <asp:Repeater ID="rptPickNewTag" runat="server">
+            <HeaderTemplate>
+                <table class="table-striped" id="myTable" style="width: 450px">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tag type</th>
+                            <th scope="col">Tag name</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <td><%#Eval(nameof(rwaLib.Models.Tags.TypeName))%></td>
+                    <td><%#Eval(nameof(rwaLib.Models.Tags.NameEng))%></td>
+                    <td>
+                        <asp:Button ID="btnPickTag" Text="ADD" runat="server" CssClass="btn btn-success" OnClick="btnPickTag_Click" CommandArgument="<%# Eval(nameof(rwaLib.Models.Tags.Id)) %>" /></td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                </tbody>
+                    </table>
+            </FooterTemplate>
+        </asp:Repeater>
+    </asp:Panel>
+
+
+
+
+
     <script src="Scripts/ImageGalery.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#myTable').DataTable({
+                pageLength: 5,
+                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']]
+            })
+        });
+
+
+    </script>
+
+
 </asp:Content>
+

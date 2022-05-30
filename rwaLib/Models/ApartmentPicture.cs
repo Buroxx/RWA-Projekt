@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace rwaLib.Models
 {
+    [Serializable]
+
     public class ApartmentPicture
     {
         public int Id { get; set; }

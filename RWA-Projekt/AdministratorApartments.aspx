@@ -32,7 +32,7 @@
                         <td><%#Eval(nameof(rwaLib.Models.Apartment.MaxChildren))%></td>
                         <td><%#Eval(nameof(rwaLib.Models.Apartment.TotalRooms))%></td>
                         <td><%#Eval(nameof(rwaLib.Models.Apartment.Pictures))%></td>
-                        <td><%#Eval(nameof(rwaLib.Models.Apartment.Price))%></td>
+                        <td><%#Eval(nameof(rwaLib.Models.Apartment.Price))%>€</td>
                         <td><asp:LinkButton OnClick="ViewApartment_Click" CommandArgument="<%# Eval(nameof(rwaLib.Models.Apartment.Id)) %>" ID="LinkButton" runat="server">Open</asp:LinkButton></td>
                     </tr>
                 </ItemTemplate>

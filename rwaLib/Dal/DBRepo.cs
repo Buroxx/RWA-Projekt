@@ -30,8 +30,9 @@ namespace rwaLib.Dal
                     MaxAdults = (int)row[nameof(Apartment.MaxAdults)],
                     MaxChildren = (int)row[nameof(Apartment.MaxChildren)],
                     TotalRooms = (int)row[nameof(Apartment.TotalRooms)],
-                    Price = row[nameof(Apartment.Price)].ToString().Substring(0, 3) + "€",
-                    StatusId = row[nameof(Apartment.StatusId)].ToString()
+                    Price = row[nameof(Apartment.Price)].ToString().Substring(0, 3),
+                    StatusId = row[nameof(Apartment.StatusId)].ToString(),
+                    BeachDistance = row[nameof(Apartment.BeachDistance)].ToString()
                 });
             }
 
@@ -45,17 +46,21 @@ namespace rwaLib.Dal
         }
 
 
+        public void SetRepresentativePicture(int novi, int stari)
+        {
+            SqlHelper.ExecuteNonQuery(CS, nameof(SetRepresentativePicture), novi, stari);
 
+        }
 
         public User AuthUser(string username, string password)
         {
             var tblAuth = SqlHelper.ExecuteDataset(CS, nameof(AuthUser), username, password).Tables[0];
             if (tblAuth.Rows.Count == 0) return null;
 
-            
+
             DataRow row = tblAuth.Rows[0];
 
-           
+
             return new User
             {
                 Id = (int)row[nameof(User.Id)],
@@ -73,17 +78,17 @@ namespace rwaLib.Dal
             var tblUsers = SqlHelper.ExecuteDataset(CS, nameof(GetAllUsers)).Tables[0];
             if (tblUsers == null) return null;
 
-                foreach (DataRow row in tblUsers.Rows)
+            foreach (DataRow row in tblUsers.Rows)
+            {
+                users.Add(new User
                 {
-                    users.Add(new User
-                    {
-                        Id = (int)row[nameof(User.Id)],
-                        UserName = row[nameof(User.UserName)].ToString(),
-                        Email = row[nameof(User.Email)].ToString(),
-                        PhoneNumber = row[nameof(User.PhoneNumber)].ToString(),
-                        Address = row[nameof(User.Address)].ToString()
+                    Id = (int)row[nameof(User.Id)],
+                    UserName = row[nameof(User.UserName)].ToString(),
+                    Email = row[nameof(User.Email)].ToString(),
+                    PhoneNumber = row[nameof(User.PhoneNumber)].ToString(),
+                    Address = row[nameof(User.Address)].ToString()
                 });
-                }
+            }
 
             return users;
         }
@@ -126,9 +131,10 @@ namespace rwaLib.Dal
                     MaxAdults = (int)row[nameof(Apartment.MaxAdults)],
                     MaxChildren = (int)row[nameof(Apartment.MaxChildren)],
                     TotalRooms = (int)row[nameof(Apartment.TotalRooms)],
-                    Price = row[nameof(Apartment.Price)].ToString().Substring(0, 3) + "€",
-                    StatusId = row[nameof(Apartment.StatusId)].ToString()
-            });
+                    Price = row[nameof(Apartment.Price)].ToString().Substring(0, 3),
+                    StatusId = row[nameof(Apartment.StatusId)].ToString(),
+                    BeachDistance = row[nameof(Apartment.BeachDistance)].ToString()
+                });
             }
 
             foreach (Apartment apart in apartments)
@@ -155,18 +161,77 @@ namespace rwaLib.Dal
             apartment.MaxAdults = (int)row[nameof(Apartment.MaxAdults)];
             apartment.MaxChildren = (int)row[nameof(Apartment.MaxChildren)];
             apartment.TotalRooms = (int)row[nameof(Apartment.TotalRooms)];
-            apartment.Price = row[nameof(Apartment.Price)].ToString().Substring(0, 3) + "€";              
+            apartment.Price = row[nameof(Apartment.Price)].ToString().Substring(0, 3);
             apartment.City = GetCityByID(apartment.Id);
             apartment.StatusId = row[nameof(Apartment.StatusId)].ToString();
+            apartment.BeachDistance = row[nameof(Apartment.BeachDistance)].ToString();
+
 
             return apartment;
+        }
+
+        public IList<Tags> GetTagsByApartmentID(int apartmentID)
+        {
+            IList<Tags> tags = new List<Tags>();
+
+            var tblTags = SqlHelper.ExecuteDataset(CS, nameof(GetTagsByApartmentID), apartmentID).Tables[0];
+            if (tblTags == null) return null;
+
+            foreach (DataRow row in tblTags.Rows)
+            {
+                tags.Add(new Tags
+                {
+                    Id = (int)row[nameof(Tags.Id)],
+                    Name = row[nameof(Tags.Name)].ToString(),
+                    NameEng = row[nameof(Tags.NameEng)].ToString(),
+                    TypeName = row[nameof(Tags.TypeName)].ToString(),
+                    TypeID = (int)row[nameof(Tags.TypeID)]
+                });
+            }
+            return tags;
+        }
+
+        public IList<Tags> GetUnusedTagsOnTaggedApartmentByID(int apartmentID)
+        {
+            IList<Tags> tags = new List<Tags>();
+
+            var tblTags = SqlHelper.ExecuteDataset(CS, nameof(GetUnusedTagsOnTaggedApartmentByID), apartmentID).Tables[0];
+            if (tblTags == null) return null;
+
+            foreach (DataRow row in tblTags.Rows)
+            {
+                tags.Add(new Tags
+                {
+                    Id = (int)row[nameof(Tags.Id)],
+                    NameEng = row[nameof(Tags.NameEng)].ToString(),
+                    TypeID = (int)row[nameof(Tags.TypeID)],
+                    TypeName = row[nameof(Tags.TypeName)].ToString(),
+                });
+            }
+            return tags;
+        }
+        public void DeleteApartmentTagByID(int tagID, int apartmentID)
+        {
+            SqlHelper.ExecuteNonQuery(CS, nameof(DeleteApartmentTagByID), tagID, apartmentID);
+        }
+
+
+        public void AddNewTagToApartment(int tagID, int apartmentID)
+        {
+            Guid guid = Guid.NewGuid();
+            SqlHelper.ExecuteNonQuery(CS, nameof(AddNewTagToApartment), tagID, apartmentID, guid);
+        }
+
+        public void UpdateApartmentInfo(Apartment newInfo, int apartmentID)
+        {
+            SqlHelper.ExecuteNonQuery(CS, nameof(UpdateApartmentInfo), newInfo.Name, newInfo.TotalRooms, newInfo.MaxChildren, newInfo.MaxAdults, newInfo.BeachDistance, Decimal.Parse(newInfo.Price), apartmentID);
         }
 
         private string GetCityByID(int id)
         {
 
-            var tblCity = SqlHelper.ExecuteDataset(CS,nameof(GetCityByID),id).Tables[0];
-            if(tblCity == null) return null;
+            var tblCity = SqlHelper.ExecuteDataset(CS, nameof(GetCityByID), id).Tables[0];
+            if (tblCity == null) return null;
             DataRow row = tblCity.Rows[0];
 
             return row[nameof(City.Name)].ToString();
@@ -194,98 +259,14 @@ namespace rwaLib.Dal
             return apartments;
         }
 
+        public void UnregisteredApartmentReservation(User u, string details, int apartmentID)
+        {
+            SqlHelper.ExecuteNonQuery(CS, nameof(UnregisteredApartmentReservation), u.UserName, u.Email, u.PhoneNumber, u.Address, details, apartmentID);
+        }
 
-
-
-
-
-
-
-        //public IList<Apartment> LoadApartmentsByTagID(int tagID)
-        //{
-        //    IList<Apartment> apartments = new List<Apartment>();
-
-        //    var tblApartments = SqlHelper.ExecuteDataset(APARTMENTS_CS, nameof(LoadApartmentsByTagID), tagID).Tables[0];
-        //    foreach (DataRow row in tblApartments.Rows)
-        //    {
-        //        apartments.Add(
-        //            new Apartment
-        //            {
-        //                Name = row[nameof(Tags.Name)].ToString()
-        //            }
-        //        );
-        //    }
-
-        //    return apartments;
-        //}
-
-        //public void AddUser(User user)
-        //{
-        //    SqlHelper.ExecuteNonQuery(CS, nameof(AddUser), user.FName, user.LName, user.City.IDCity, user.Username, user.Password);
-        //}
-
-        //public User AuthUser(string username, string password)
-        //{
-        //    var tblAuth = SqlHelper.ExecuteDataset(CS, nameof(AuthUser), username, password).Tables[0];
-        //    if (tblAuth.Rows.Count == 0) return null;
-
-        //    DataRow row = tblAuth.Rows[0];
-        //    return new User
-        //    {
-        //        IDAuth = (int)row[nameof(User.IDAuth)],
-        //        FName = row[nameof(User.FName)].ToString(),
-        //        LName = row[nameof(User.LName)].ToString(),
-        //        City = new City((int)row[nameof(City.IDCity)], row[nameof(City.Name)].ToString()),
-        //        Username = row[nameof(User.Username)].ToString(),
-        //        Password = row[nameof(User.Password)].ToString()
-        //    };
-        //}
-
-        //public IList<City> LoadCities()
-        //{
-        //    IList<City> cities = new List<City>();
-
-        //    var tblUsers = SqlHelper.ExecuteDataset(CS, nameof(LoadCities)).Tables[0];
-        //    foreach (DataRow row in tblUsers.Rows)
-        //    {
-        //        cities.Add(
-        //            new City
-        //            {
-        //                IDCity = (int)row[nameof(City.IDCity)],
-        //                Name = row[nameof(City.Name)].ToString(),
-        //            }
-        //        );
-        //    }
-
-        //    return cities;
-        //}
-
-        //public IList<User> LoadUsers()
-        //{
-        //    IList<User> users = new List<User>();
-
-        //    var tblUsers = SqlHelper.ExecuteDataset(CS, nameof(LoadUsers)).Tables[0];
-        //    foreach (DataRow row in tblUsers.Rows)
-        //    {
-        //        users.Add(
-        //            new User
-        //            {
-        //                IDAuth = (int)row[nameof(User.IDAuth)],
-        //                FName = row[nameof(User.FName)].ToString(),
-        //                LName = row[nameof(User.LName)].ToString(),
-        //                City = new City((int)row[nameof(City.IDCity)], row[nameof(City.Name)].ToString()),
-        //                Username = row[nameof(User.Username)].ToString(),
-        //                Password = row[nameof(User.Password)].ToString()
-        //            }
-        //        );
-        //    }
-
-        //    return users;
-        //}
-
-        //public void SaveUser(User user)
-        //{
-        //    SqlHelper.ExecuteNonQuery(CS, nameof(SaveUser), user.FName, user.LName, user.Username, user.IDAuth);
-        //}
+        public void RegisteredApartmentReservation(int userID, int apartmentID, string details)
+        {
+            SqlHelper.ExecuteNonQuery(CS, nameof(RegisteredApartmentReservation),userID,apartmentID,details);
+        }
     }
 }

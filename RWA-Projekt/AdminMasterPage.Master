@@ -55,7 +55,10 @@
 
     <script>    
         $(document).ready(function () {
-            $('#myTable').DataTable();
+            $('#myTable').DataTable({
+                pageLength: 5,
+                lengthMenu: [[5, 10, 20], [5, 10, 20]]
+            })
         });
     </script>
 
