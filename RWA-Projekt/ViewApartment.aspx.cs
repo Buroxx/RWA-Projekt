@@ -48,6 +48,7 @@ namespace RWA_Projekt
 
         private void LoadData()
         {
+            pnlButtonAddTag.Visible = false;
             pnlRegistered.Visible = false;
             pnlRegisteredDetails.Visible = false;
             pnlAddNewPicture.Visible = false;
@@ -209,10 +210,9 @@ namespace RWA_Projekt
             rptTags.Visible = true;
             pnlButtonAddTag.Visible = true;
             pnlTags.Visible = true;
+            pnlPickNewTag.Visible = true;
 
             pnlRepresentativePictures.Visible = false;
-            pnlButtonAddTag.Visible = false;
-            pnlPickNewTag.Visible = false;
             pnlEditImages.Visible = false;
             pnlAddNewPicture.Visible = false;
         }

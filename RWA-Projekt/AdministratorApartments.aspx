@@ -5,8 +5,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
 
 
-    <div class="container m-4">
-        <div class="col-md-6">
+    <div class="mt-4 d-flex justify-content-center">
+        <div>
             <asp:Repeater ID="rptApartments" runat="server">
                 <HeaderTemplate>
                     <table class="table" id="myTable" style="width: max-content">

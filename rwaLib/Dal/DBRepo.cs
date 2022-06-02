@@ -46,6 +46,68 @@ namespace rwaLib.Dal
             return apartments;
         }
 
+        public IList<string> GetAllTagTypes()
+        {
+            IList<String> tagTypes= new List<String>();
+
+            var tblTagTypes = SqlHelper.ExecuteDataset(CS, nameof(GetAllTagTypes)).Tables[0];
+            if (tblTagTypes == null) return null;
+
+            foreach (DataRow row in tblTagTypes.Rows)
+            {
+                tagTypes.Add(row[nameof(Tags.NameEng)].ToString());
+            }
+
+            return tagTypes;
+        }
+
+        public void DeleteTagByID(int tagID)
+        {
+            SqlHelper.ExecuteNonQuery(CS, nameof(DeleteTagByID), tagID);
+        }
+
+        public IList<Tags> GetAllTags()
+        {
+            IList<Tags> tags = new List<Tags>();
+
+            var tblTags = SqlHelper.ExecuteDataset(CS, nameof(GetAllTags)).Tables[0];
+            if (tblTags == null) return null;
+
+            foreach (DataRow row in tblTags.Rows)
+            {
+                tags.Add(new Tags
+                {
+                    Id = (int)row[nameof(Tags.Id)],
+                    Name = row[nameof(Tags.Name)].ToString(),
+                    NameEng = row[nameof(Tags.NameEng)].ToString(),
+                    TypeNameEng= row[nameof(Tags.TypeNameEng)].ToString(),
+                    TypeNameHrv= row[nameof(Tags.TypeNameHrv)].ToString()
+                });
+            }
+
+            foreach (Tags tag in tags)
+            {
+                tag.Usage = GetUsage(tag.Id);
+            }
+
+
+            return tags;
+        }
+
+        public void AddNewTag(int typeID, string nameHrv, string nameEng)
+        {
+            SqlHelper.ExecuteNonQuery(CS, nameof(AddNewTag), typeID, nameHrv, nameEng);
+        }
+
+        private int GetUsage(int tagID)
+        {
+            var tblUsage = SqlHelper.ExecuteDataset(CS, nameof(GetUsage), tagID).Tables[0];
+            if (tblUsage == null) return 0;
+            DataRow row = tblUsage.Rows[0];
+
+            return (int)(row[nameof(Tags.Usage)]);
+        }
+
         private int GetNumberOfPictures(int apartmentID)
         {
             var tblPictures = SqlHelper.ExecuteDataset(CS, nameof(GetNumberOfPictures), apartmentID).Tables[0];
@@ -197,7 +259,7 @@ namespace rwaLib.Dal
                     Id = (int)row[nameof(Tags.Id)],
                     Name = row[nameof(Tags.Name)].ToString(),
                     NameEng = row[nameof(Tags.NameEng)].ToString(),
-                    TypeName = row[nameof(Tags.TypeName)].ToString(),
+                    TypeNameEng = row[nameof(Tags.TypeNameEng)].ToString(),
                     TypeID = (int)row[nameof(Tags.TypeID)]
                 });
             }
@@ -218,7 +280,7 @@ namespace rwaLib.Dal
                     Id = (int)row[nameof(Tags.Id)],
                     NameEng = row[nameof(Tags.NameEng)].ToString(),
                     TypeID = (int)row[nameof(Tags.TypeID)],
-                    TypeName = row[nameof(Tags.TypeName)].ToString(),
+                    TypeNameEng = row[nameof(Tags.TypeNameEng)].ToString(),
                 });
             }
             return tags;

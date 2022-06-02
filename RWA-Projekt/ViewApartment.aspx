@@ -111,7 +111,7 @@
     <%-- STATUS --%>
     <div class="d-flex justify-content-center mt-2 gap-4 align-align-items-center">
         <asp:Label runat="server" ID="lbStatus" Text="Status: " />
-        <asp:DropDownList ID="ddlStatus" runat="server" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged" AutoPostBack="true" CssClass="left form-control"></asp:DropDownList>
+        <asp:DropDownList ID="ddlStatus" runat="server" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged" AutoPostBack="true" CssClass="form-control"></asp:DropDownList>
     </div>
 
 
@@ -398,7 +398,7 @@
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
-                    <td><%#Eval(nameof(rwaLib.Models.Tags.TypeName))%></td>
+                    <td><%#Eval(nameof(rwaLib.Models.Tags.TypeNameEng))%></td>
                     <td><%#Eval(nameof(rwaLib.Models.Tags.NameEng))%></td>
                     <td>
                         <asp:Button ID="btnAreYouSure" Text="DELETE" runat="server" CssClass="btn btn-danger" OnClick="btnAreYouSure_Click" CommandArgument="<%# Eval(nameof(rwaLib.Models.Tags.Id)) %>" />
@@ -412,7 +412,7 @@
         </asp:Repeater>
     </asp:Panel>
     <%-- ADD TAGS --%>
-    <asp:Panel ID="pnlButtonAddTag" runat="server" Visible="false">
+    <asp:Panel ID="pnlButtonAddTag" runat="server">
         <div class="d-flex justify-content-center">
             <asp:Button ID="btnAddTag" Text="Add tag" runat="server" CssClass="btn btn-success" Font-Bold="true" OnClick="btnAddTag_Click" />
         </div>
@@ -436,7 +436,7 @@
             </HeaderTemplate>
             <ItemTemplate>
                 <tr>
-                    <td><%#Eval(nameof(rwaLib.Models.Tags.TypeName))%></td>
+                    <td><%#Eval(nameof(rwaLib.Models.Tags.TypeNameEng))%></td>
                     <td><%#Eval(nameof(rwaLib.Models.Tags.NameEng))%></td>
                     <td>
                         <asp:Button ID="btnPickTag" Text="ADD" runat="server" CssClass="btn btn-success" OnClick="btnPickTag_Click" CommandArgument="<%# Eval(nameof(rwaLib.Models.Tags.Id)) %>" /></td>
@@ -461,7 +461,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Are you sure that you want to delete the tag?</p>
+                        <p>Are you sure that you want to delete this tag?</p>
                     </div>
                     <div class="modal-footer">
                         <asp:Button ID="btnDeleteTag" Text="DELETE" runat="server" CssClass="btn btn-danger" OnClick="btnDeleteTag_Click" />
