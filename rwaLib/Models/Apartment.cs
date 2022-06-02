@@ -19,5 +19,6 @@ namespace rwaLib.Models
         public string Price { get; set; }
         public string StatusId { get; set; }
         public string BeachDistance { get; set; }
+        public int NumberOfPictures { get; set; }
     }
 }

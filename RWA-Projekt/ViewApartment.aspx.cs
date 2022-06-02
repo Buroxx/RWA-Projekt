@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.IO;
 
 namespace RWA_Projekt
 {
@@ -25,12 +26,14 @@ namespace RWA_Projekt
             }
             else
             {
-                Page.MaintainScrollPositionOnPostBack = true;
+                MaintainScrollPositionOnPostBack = true;
                 btnRegistered.ForeColor = System.Drawing.Color.Black;
                 btnUnregistered.ForeColor = System.Drawing.Color.Black;
                 pnlUnregistered.Visible = false;
                 pnlRegistered.Visible = false;
                 OldSession();
+                pnlModal.Visible = false;
+                pnlAddNewPicture.Visible = false;
             }
 
         }
@@ -47,6 +50,7 @@ namespace RWA_Projekt
         {
             pnlRegistered.Visible = false;
             pnlRegisteredDetails.Visible = false;
+            pnlAddNewPicture.Visible = false;
 
             ddlStatus.Items.Insert(0, "Occupied");
             ddlStatus.Items.Insert(1, "Reserved");
@@ -141,7 +145,15 @@ namespace RWA_Projekt
             rptRepresentativePictures.DataSource = pictureList;
             rptRepresentativePictures.DataBind();
             pnlRepresentativePictures.Visible = true;
+            
+            pnlEditImages.Visible = false;
+            pnlAddNewPicture.Visible = false;
+            pnlTags.Visible = false;
+            pnlButtonAddTag.Visible = false;
+            pnlPickNewTag.Visible = false;
         }
+
+        
 
         protected void lbRepresentativeChange_Click(object sender, EventArgs e)
         {
@@ -197,18 +209,23 @@ namespace RWA_Projekt
             rptTags.Visible = true;
             pnlButtonAddTag.Visible = true;
             pnlTags.Visible = true;
+
+            pnlRepresentativePictures.Visible = false;
+            pnlButtonAddTag.Visible = false;
+            pnlPickNewTag.Visible = false;
+            pnlEditImages.Visible = false;
+            pnlAddNewPicture.Visible = false;
         }
 
 
         protected void btnDeleteTag_Click(object sender, EventArgs e)
         {
-            Button btnPicked = (Button)sender;
-            int tagID = int.Parse(btnPicked.CommandArgument);
+            pnlModal.Visible = false;
+            int tagID = (int)ViewState["pickedTagToDelete"];
             ((DBRepo)Application["database"]).DeleteApartmentTagByID(tagID, apartmentID);
             IList<Tags> tags = ((DBRepo)Application["database"]).GetTagsByApartmentID(apartmentID);
             rptTags.DataSource = tags;
             rptTags.DataBind();
-
         }
 
         protected void btnAddTag_Click(object sender, EventArgs e)
@@ -268,7 +285,7 @@ namespace RWA_Projekt
 
         protected void btnAddUnregisteredUser_Click(object sender, EventArgs e)
         {
-            
+
             apartmentID = (int)Session["ApartmentID"];
 
             User u = new User
@@ -279,7 +296,7 @@ namespace RWA_Projekt
                 Address = tbAddress.Text
             };
             string details = tbDetails.Text;
-            ((DBRepo)Application["database"]).UnregisteredApartmentReservation(u,details,apartmentID);
+            ((DBRepo)Application["database"]).UnregisteredApartmentReservation(u, details, apartmentID);
             gvAddedUser.Visible = false;
             pnlAddUnregisteredBTN.Visible = false;
         }
@@ -289,10 +306,100 @@ namespace RWA_Projekt
             apartmentID = (int)Session["ApartmentID"];
             int userID = (int)ViewState["pickedRegisteredUserID"];
             string details = tbRegisteredDetails.Text;
-            ((DBRepo)Application["database"]).RegisteredApartmentReservation(userID,apartmentID,details);
+            ((DBRepo)Application["database"]).RegisteredApartmentReservation(userID, apartmentID, details);
             pnlRegisteredDetails.Visible = false;
             pnlBtnAddRegisteredUser.Visible = false;
             gvPickedUser.Visible = false;
+        }
+
+        protected void btnAreYouSure_Click(object sender, EventArgs e)
+        {
+            Button btnPicked = (Button)sender;
+            int tagID = int.Parse(btnPicked.CommandArgument);
+            pnlModal.Visible = true;
+            ViewState["pickedTagToDelete"] = tagID;
+        }
+
+        protected void btnEditPictures_Click(object sender, EventArgs e)
+        {
+            int apartmentID = (int)Session["ApartmentID"];
+            pnlEditImages.Visible = true;
+            rptDeleteImage.DataSource = pictureList;
+            rptDeleteImage.DataBind();
+
+            pnlRepresentativePictures.Visible = false;
+            pnlAddNewPicture.Visible = false;
+            pnlTags.Visible = false;
+            pnlButtonAddTag.Visible = false;
+            pnlPickNewTag.Visible = false;
+
+            pnlAddNewPicture.Visible = true;
+
+        }
+
+        protected void btnDeleteImageChose_Click(object sender, EventArgs e)
+        {
+            Button btnPicked = (Button)sender;
+            int pictureID = int.Parse(btnPicked.CommandArgument);
+            string path = btnPicked.CommandName.ToString();
+            ViewState["pickedImageToDeleteID"] = pictureID;
+            ViewState["pickedImageToDeletePath"] = path;
+
+            pnlImageDelete.Visible = true;
+
+        }
+
+        protected void btnDeleteImage_Click(object sender, EventArgs e)
+        {
+            int pictureID = (int)ViewState["pickedImageToDeleteID"];
+            string path = Request.PhysicalApplicationPath + ViewState["pickedImageToDeletePath"].ToString();
+
+            ((DBRepo)Application["database"]).DeleteApartmentPictureByID(apartmentID, pictureID);
+
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            else
+            {
+                Response.Redirect("ViewApartment.aspx");
+            }
+
+            Response.Redirect("ViewApartment.aspx");
+
+        }
+
+        protected void btnChooseFile_Click(object sender, EventArgs e)
+        {
+            string folderPath = Request.PhysicalApplicationPath + "/Images/";
+            string fullPath = folderPath + Path.GetFileName(FileUpload.FileName);
+            string forDataBase = "/Images/" + Path.GetFileName(FileUpload.FileName);
+            if (File.Exists(fullPath))
+            {
+                return;
+            }
+
+            if (String.IsNullOrEmpty(Path.GetFileName(FileUpload.FileName)))
+            {
+                return;
+            }
+            else
+            {
+            FileUpload.SaveAs(fullPath); 
+            }
+            ((DBRepo)Application["database"]).SaveNewPicture(apartmentID, forDataBase);
+            Response.Redirect("ViewApartment.aspx");
+        }
+
+        protected void btnAddPictures_Click(object sender, EventArgs e)
+        {
+            pnlAddNewPicture.Visible = true;
+
+            pnlRepresentativePictures.Visible = false;
+            pnlTags.Visible = false;
+            pnlButtonAddTag.Visible = false;
+            pnlPickNewTag.Visible = false;
+            pnlEditImages.Visible = false;
         }
     }
 }

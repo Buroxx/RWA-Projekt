@@ -1,5 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/AdminMasterPage.Master" AutoEventWireup="true" CodeBehind="ViewApartment.aspx.cs" Inherits="RWA_Projekt.ViewApartment" %>
-
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/AdminMasterPage.Master" AutoEventWireup="true" CodeBehind="ViewApartment.aspx.cs" Inherits="RWA_Projekt.ViewApartment"%>
 <asp:Content ID="Content1" ContentPlaceHolderID="Head" runat="server">
     <link href="CSS/ImageGalery.css" rel="stylesheet" />
     <title id="title"></title>
@@ -29,9 +28,7 @@
 
 
 <asp:Content ID="Content2" ContentPlaceHolderID="Content" runat="server">
-
-
-
+ 
 
     <%-- INFO PANEL --%>
     <div class="container d-flex h-75" style="width: 800px">
@@ -109,11 +106,14 @@
         </div>
     </asp:Panel>
 
+
+
     <%-- STATUS --%>
     <div class="d-flex justify-content-center mt-2 gap-4 align-align-items-center">
         <asp:Label runat="server" ID="lbStatus" Text="Status: " />
         <asp:DropDownList ID="ddlStatus" runat="server" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged" AutoPostBack="true" CssClass="left form-control"></asp:DropDownList>
     </div>
+
 
 
 
@@ -128,9 +128,8 @@
 
 
 
-
     <%-- BUTTON REGISTERED --%>
-    <asp:Panel ID="pnlRegistered" runat="server">
+    <asp:Panel ID="pnlRegistered" runat="server" Visible="true">
         <div class="container mt-2 d-flex justify-content-center">
             <div>
                 <asp:Repeater ID="rptUsers" runat="server">
@@ -169,28 +168,32 @@
         </div>
     </asp:Panel>
 
+
+
     <%-- PICKED USER --%>
-        <asp:GridView ID="gvPickedUser" runat="server" AutoGenerateColumns="false" CssClass="d-flex justify-content-center mt-2 table tablica">
-            <Columns>
-                <asp:BoundField HeaderText="First name" DataField="FirstName" />
-                <asp:BoundField HeaderText="Last name" DataField="LastName" />
-                <asp:BoundField HeaderText="Email" DataField="Email" />
-                <asp:BoundField HeaderText="Phone number" DataField="PhoneNumber" />
-                <asp:BoundField HeaderText="Address" DataField="Address" />
-            </Columns>
-        </asp:GridView>
+    <asp:GridView ID="gvPickedUser" runat="server" AutoGenerateColumns="false" CssClass="d-flex justify-content-center mt-2 table tablica">
+        <Columns>
+            <asp:BoundField HeaderText="First name" DataField="FirstName" />
+            <asp:BoundField HeaderText="Last name" DataField="LastName" />
+            <asp:BoundField HeaderText="Email" DataField="Email" />
+            <asp:BoundField HeaderText="Phone number" DataField="PhoneNumber" />
+            <asp:BoundField HeaderText="Address" DataField="Address" />
+        </Columns>
+    </asp:GridView>
     <asp:Panel runat="server" ID="pnlRegisteredDetails">
-             <div class="d-flex-column justify-content-center mt-2">
-                <asp:Label runat="server" ID="Label8" Text="Details:" />
-                <asp:TextBox ID="tbRegisteredDetails" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>
+        <div class="d-flex-column justify-content-center mt-2">
+            <asp:Label runat="server" ID="Label8" Text="Details:" />
+            <asp:TextBox ID="tbRegisteredDetails" runat="server" CssClass="form-control"></asp:TextBox>
+        </div>
     </asp:Panel>
     <asp:Panel ID="pnlBtnAddRegisteredUser" runat="server" Visible="false">
         <div class="d-flex justify-content-center">
-           <asp:Button ID="btnAddRegisteredUser" runat="server" Text="Add user" CssClass="btn btn-success" Font-Bold="True" OnClick="btnAddRegisteredUser_Click" />
+            <asp:Button ID="btnAddRegisteredUser" runat="server" Text="Add user" CssClass="btn btn-success" Font-Bold="True" OnClick="btnAddRegisteredUser_Click" />
         </div>
     </asp:Panel>
 
+
+   
 
 
     <%-- BUTTON UNREGISTERED --%>
@@ -269,10 +272,84 @@
         </div>
     </div>
 
+
     <div class="d-flex justify-content-center mt-2 gap-4">
+        <asp:Button ID="btnAddPictures" runat="server" Text="Add Pictures" CssClass="btn btn-secondary" Font-Bold="True" OnClick="btnAddPictures_Click" />
+    </div>
+
+    <div class="d-flex justify-content-center mt-2 gap-4">
+        <asp:Button ID="btnEditPictures" runat="server" Text="Edit Pictures" CssClass="btn btn-secondary" Font-Bold="True" OnClick="btnEditPictures_Click" />
+    </div>
+        <div class="d-flex justify-content-center mt-2 gap-4">
         <asp:Button ID="btnTag" runat="server" Text="Edit tags" CssClass="btn btn-secondary" Font-Bold="True" OnClick="btnTag_Click" />
     </div>
 
+    <%-- EDIT PICTURES --%>
+
+    <asp:Panel ID="pnlEditImages" runat="server" CssClass="d-flex justify-content-center" Visible="false">
+        <asp:Repeater ID="rptDeleteImage" runat="server">
+            <HeaderTemplate>
+                <table class="table-striped" id="" style="width: 450px">
+                    <thead>
+                        <tr>
+                            <th scope="col">Pick a picture to delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            </HeaderTemplate>
+            <ItemTemplate>
+                <tr>
+                    <td>
+                        <img src="<%#Eval(nameof(rwaLib.Models.ApartmentPicture.Path))%>" style="width: 400px;" />
+                        <asp:Button Text="DELETE" runat="server" ID="btnDeleteImageChose" CommandName="<%# Eval(nameof(rwaLib.Models.ApartmentPicture.Path))%>" CommandArgument="<%# Eval(nameof(rwaLib.Models.ApartmentPicture.Id))%>" OnClick="btnDeleteImageChose_Click" CssClass="btn btn-danger" />
+                    </td>
+                </tr>
+            </ItemTemplate>
+            <FooterTemplate>
+                </tbody>
+                    </table>
+            </FooterTemplate>
+        </asp:Repeater>
+    </asp:Panel>
+
+    <%-- EDIT PICTURE MODAL FOR DELETE --%>
+
+    <asp:Panel runat="server" ID="pnlImageDelete" Visible="false">
+        <div class="modal" tabindex="-1" role="dialog" style="display: block">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete this image?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="remove()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure that you want to delete this image?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <asp:Button ID="btnDeleteImage" Text="DELETE" runat="server" CssClass="btn btn-danger" OnClick="btnDeleteImage_Click" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="remove()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </asp:Panel>
+
+    <%-- ADDING NEW PICS --%>
+    <asp:Panel runat="server" ID="pnlAddNewPicture">
+        <div class="d-flex justify-content-center mt-2">
+                 <label>Upload a new picture:</label>
+         </div>
+        <div class="d-flex justify-content-center mt-2">
+            <div>
+                <asp:FileUpload ID="FileUpload" runat="server" accept=".png,.jpg,.jpeg" CssClass="btn"/>
+            </div>
+        </div>
+            <div class="d-flex justify-content-center mt-2">
+                <asp:Button ID="btnChooseFile" Text="Add picture" runat="server" CssClass="btn btn-success" OnClick="btnChooseFile_Click"/>
+            </div>
+    </asp:Panel>
 
 
     <%-- CHANGE REPRESENTATIVE PANEL --%>
@@ -283,7 +360,7 @@
                 <table class="table-striped" id="" style="width: 450px">
                     <thead>
                         <tr>
-                            <th scope="col">Picture</th>
+                            <th scope="col">Pick a new representative picture:</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -305,17 +382,6 @@
     </asp:Panel>
 
 
-
-
-
-
-
-
-
-
-
-
-
     <%-- TAGS + DELETE --%>
     <asp:Panel ID="pnlTags" runat="server" Visible="false" CssClass="table d-flex justify-content-center">
         <asp:Repeater ID="rptTags" runat="server">
@@ -335,7 +401,8 @@
                     <td><%#Eval(nameof(rwaLib.Models.Tags.TypeName))%></td>
                     <td><%#Eval(nameof(rwaLib.Models.Tags.NameEng))%></td>
                     <td>
-                        <asp:Button ID="btnDeleteTag" Text="DELETE" runat="server" CssClass="btn btn-danger" OnClick="btnDeleteTag_Click" CommandArgument="<%# Eval(nameof(rwaLib.Models.Tags.Id)) %>" /></td>
+                        <asp:Button ID="btnAreYouSure" Text="DELETE" runat="server" CssClass="btn btn-danger" OnClick="btnAreYouSure_Click" CommandArgument="<%# Eval(nameof(rwaLib.Models.Tags.Id)) %>" />
+                    </td>
                 </tr>
             </ItemTemplate>
             <FooterTemplate>
@@ -382,7 +449,30 @@
         </asp:Repeater>
     </asp:Panel>
 
+    <%-- MODAL TAG --%>
+    <asp:Panel runat="server" ID="pnlModal" Visible="false">
+        <div class="modal" tabindex="-1" role="dialog" style="display: block">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete this tag?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="remove()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure that you want to delete the tag?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <asp:Button ID="btnDeleteTag" Text="DELETE" runat="server" CssClass="btn btn-danger" OnClick="btnDeleteTag_Click" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="remove()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </asp:Panel>
 
+ 
 
 
 
@@ -395,10 +485,17 @@
                 lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']]
             })
         });
-
-
     </script>
 
+    <script>
+        function remove() {
+            $('.modal').hide();
+        }
+        //$("#lnkAttachSOW").click(function () {
+        //    $("#FileUpload").click();
+        //});
+    </script>
+ 
 
 </asp:Content>
 

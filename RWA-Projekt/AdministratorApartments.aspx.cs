@@ -38,10 +38,25 @@ namespace RWA_Projekt
 
         protected void ViewApartment_Click(object sender, EventArgs e)
         {
-            LinkButton btnViewApartment = (LinkButton)sender;
+            Button btnViewApartment = (Button)sender;
             int Id = int.Parse(btnViewApartment.CommandArgument);
             Session["ApartmentID"] = Id;
             Response.Redirect("ViewApartment.aspx");
+        }
+
+        protected void btnDeleteApartment_Click(object sender, EventArgs e)
+        {
+            int apartmentID = (int)ViewState["apartmentID"];
+            ((DBRepo)Application["database"]).DeleteApartment(apartmentID);
+            Response.Redirect("AdministratorApartments.aspx");
+        }
+
+        protected void btnDeleteModal_Click(object sender, EventArgs e)
+        {
+            Button btnDeleteApartment = (Button)sender;
+            int apartmentID = int.Parse(btnDeleteApartment.CommandArgument);
+            pnlModal.Visible = true;
+            ViewState["apartmentID"] = apartmentID;
         }
     }
 }

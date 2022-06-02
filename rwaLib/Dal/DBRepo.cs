@@ -32,7 +32,8 @@ namespace rwaLib.Dal
                     TotalRooms = (int)row[nameof(Apartment.TotalRooms)],
                     Price = row[nameof(Apartment.Price)].ToString().Substring(0, 3),
                     StatusId = row[nameof(Apartment.StatusId)].ToString(),
-                    BeachDistance = row[nameof(Apartment.BeachDistance)].ToString()
+                    BeachDistance = row[nameof(Apartment.BeachDistance)].ToString(),
+                    NumberOfPictures = GetNumberOfPictures((int)row[nameof(Apartment.Id)])
                 });
             }
 
@@ -45,11 +46,23 @@ namespace rwaLib.Dal
             return apartments;
         }
 
+        private int GetNumberOfPictures(int apartmentID)
+        {
+            var tblPictures = SqlHelper.ExecuteDataset(CS, nameof(GetNumberOfPictures), apartmentID).Tables[0];
+            if (tblPictures == null) return 0;
+            DataRow row = tblPictures.Rows[0];
+
+            return (int)(row[nameof(Apartment.NumberOfPictures)]);
+        }
 
         public void SetRepresentativePicture(int novi, int stari)
         {
             SqlHelper.ExecuteNonQuery(CS, nameof(SetRepresentativePicture), novi, stari);
+        }
 
+        public void DeleteApartment(int apartmentID)
+        {
+            SqlHelper.ExecuteNonQuery(CS, nameof(DeleteApartment), apartmentID, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString());
         }
 
         public User AuthUser(string username, string password)
@@ -266,7 +279,17 @@ namespace rwaLib.Dal
 
         public void RegisteredApartmentReservation(int userID, int apartmentID, string details)
         {
-            SqlHelper.ExecuteNonQuery(CS, nameof(RegisteredApartmentReservation),userID,apartmentID,details);
+            SqlHelper.ExecuteNonQuery(CS, nameof(RegisteredApartmentReservation), userID, apartmentID, details);
+        }
+
+        public void DeleteApartmentPictureByID(int apartmentID, int pictureID)
+        {
+            SqlHelper.ExecuteNonQuery(CS, nameof(DeleteApartmentPictureByID), apartmentID, pictureID);
+        }
+
+        public void SaveNewPicture(int apartmentID, string forDataBase)
+        {
+            SqlHelper.ExecuteNonQuery(CS, nameof(SaveNewPicture), apartmentID, forDataBase);
         }
     }
 }
