@@ -56,7 +56,7 @@
 
             <div class="py-2">
                 <asp:Label runat="server" ID="lblCity" Text="Price(€):" />
-                <asp:TextBox ID="tbPrice" runat="server" CssClass="form-control" TextMode="Number"></asp:TextBox>
+                <asp:TextBox ID="tbPrice" runat="server" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfvPrice" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbPrice" Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
         </div>
@@ -65,24 +65,24 @@
 
             <div>
                 <asp:Label runat="server" ID="lblAdults" Text="Adult rooms:" />
-                <asp:TextBox ID="tbAdults" runat="server" Width="50px" CssClass="form-control" TextMode="Number"></asp:TextBox>
+                <asp:TextBox ID="tbAdults" runat="server" Width="50px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfvAdults" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbAdults" Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
 
             <div>
                 <asp:Label runat="server" ID="lblChildren" Text="Children rooms:" />
-                <asp:TextBox ID="tbChildren" runat="server" Width="50px" CssClass="form-control" TextMode="Number"></asp:TextBox>
+                <asp:TextBox ID="tbChildren" runat="server" Width="50px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfvChildren" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbChildren" Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
 
             <div>
                 <asp:Label runat="server" ID="lblRooms" Text="Total rooms:" />
-                <asp:TextBox ID="tbRooms" runat="server" Width="50px" CssClass="form-control" TextMode="Number"></asp:TextBox>
+                <asp:TextBox ID="tbRooms" runat="server" Width="50px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfvRooms" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbRooms" Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
             <div>
                 <asp:Label runat="server" ID="Label7" Text="Beach distance: " />
-                <asp:TextBox ID="tbBeachDistance" runat="server" Width="60px" CssClass="form-control" TextMode="Number"></asp:TextBox>
+                <asp:TextBox ID="tbBeachDistance" runat="server" Width="60px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfvBeach" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbBeachDistance" Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
         </div>

@@ -18,7 +18,7 @@ namespace RWA_Projekt
         {
             User owner = (User)Session["user"];
 
-            //_listOfAllApartments = ((DBRepo)Application["database"]).GetApartmentByOwnerID(owner.Id);
+            //listOfAllApartments = ((DBRepo)Application["database"]).GetApartmentByOwnerID(owner.Id);
             listOfAllApartments = ((DBRepo)Application["database"]).GetAllApartments();
 
             if (!IsPostBack)
@@ -32,8 +32,6 @@ namespace RWA_Projekt
             rptApartments.DataSource = listOfAllApartments;
             rptApartments.DataBind();
 
-            //gvApartments.DataSource = ((DBRepo)Application["database"]).GetAllApartments();
-            //gvApartments.DataBind();
         }
 
         protected void ViewApartment_Click(object sender, EventArgs e)
@@ -57,6 +55,11 @@ namespace RWA_Projekt
             int apartmentID = int.Parse(btnDeleteApartment.CommandArgument);
             pnlModal.Visible = true;
             ViewState["apartmentID"] = apartmentID;
+        }
+
+        protected void btnNewApartment_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("NewApartment.aspx");
         }
     }
 }

@@ -48,6 +48,9 @@
         </div>
     </div>
 
+    <div class="d-flex justify-content-center">
+        <asp:Button Text="ADD NEW APARTMENT" runat="server" CssClass="btn btn-warning" OnClick="btnNewApartment_Click" ID="btnNewApartment" />
+    </div>
 
 
     <asp:Panel runat="server" ID="pnlModal" Visible="false">

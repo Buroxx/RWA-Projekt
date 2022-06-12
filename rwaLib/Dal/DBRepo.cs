@@ -46,9 +46,59 @@ namespace rwaLib.Dal
             return apartments;
         }
 
+        public int GetNewApartment(int ownerID, string nameEng)
+        {
+            var tblnNewApartmentID = SqlHelper.ExecuteDataset(CS, nameof(GetNewApartment), ownerID, nameEng).Tables[0];
+            if (tblnNewApartmentID == null) return 0;
+            DataRow row = tblnNewApartmentID.Rows[0];
+
+            return (int)(row[nameof(Owner.Id)]);
+        }
+
+        public void AddNewApartment(Apartment apartment)
+        {
+            SqlHelper.ExecuteNonQuery(CS, nameof(AddNewApartment), apartment.Name, apartment.NameEng, Decimal.Parse(apartment.Price), apartment.MaxAdults, apartment.MaxChildren, apartment.TotalRooms, apartment.BeachDistance, apartment.CityId, apartment.OwnerID, apartment.Address);
+        }
+
+        public IList<Owner> GetAllOwners()
+        {
+            IList<Owner> owners = new List<Owner>();
+
+            var tblOwners = SqlHelper.ExecuteDataset(CS, nameof(GetAllOwners)).Tables[0];
+            if (tblOwners == null) return null;
+
+            foreach (DataRow row in tblOwners.Rows)
+            {
+                owners.Add(new Owner
+                {
+                    Id = (int)row[nameof(Owner.Id)],
+                    Name = row[nameof(Owner.Name)].ToString(),
+                });
+            }
+            return owners;
+        }
+
+        public IList<City> GetAllCities()
+        {
+            IList<City> cities = new List<City>();
+
+            var tblCities = SqlHelper.ExecuteDataset(CS, nameof(GetAllCities)).Tables[0];
+            if (tblCities == null) return null;
+
+            foreach (DataRow row in tblCities.Rows)
+            {
+                cities.Add(new City
+                {
+                    Id = (int)row[nameof(City.Id)],
+                    Name = row[nameof(City.Name)].ToString(),
+                });
+            }
+            return cities;
+        }
+
         public IList<string> GetAllTagTypes()
         {
-            IList<String> tagTypes= new List<String>();
+            IList<String> tagTypes = new List<String>();
 
             var tblTagTypes = SqlHelper.ExecuteDataset(CS, nameof(GetAllTagTypes)).Tables[0];
             if (tblTagTypes == null) return null;
@@ -80,8 +130,8 @@ namespace rwaLib.Dal
                     Id = (int)row[nameof(Tags.Id)],
                     Name = row[nameof(Tags.Name)].ToString(),
                     NameEng = row[nameof(Tags.NameEng)].ToString(),
-                    TypeNameEng= row[nameof(Tags.TypeNameEng)].ToString(),
-                    TypeNameHrv= row[nameof(Tags.TypeNameHrv)].ToString()
+                    TypeNameEng = row[nameof(Tags.TypeNameEng)].ToString(),
+                    TypeNameHrv = row[nameof(Tags.TypeNameHrv)].ToString()
                 });
             }
 
@@ -206,7 +256,7 @@ namespace rwaLib.Dal
                     MaxAdults = (int)row[nameof(Apartment.MaxAdults)],
                     MaxChildren = (int)row[nameof(Apartment.MaxChildren)],
                     TotalRooms = (int)row[nameof(Apartment.TotalRooms)],
-                    Price = row[nameof(Apartment.Price)].ToString().Substring(0, 3),
+                    Price = row[nameof(Apartment.Price)].ToString(),
                     StatusId = row[nameof(Apartment.StatusId)].ToString(),
                     BeachDistance = row[nameof(Apartment.BeachDistance)].ToString()
                 });
@@ -236,7 +286,7 @@ namespace rwaLib.Dal
             apartment.MaxAdults = (int)row[nameof(Apartment.MaxAdults)];
             apartment.MaxChildren = (int)row[nameof(Apartment.MaxChildren)];
             apartment.TotalRooms = (int)row[nameof(Apartment.TotalRooms)];
-            apartment.Price = row[nameof(Apartment.Price)].ToString().Substring(0, 3);
+            apartment.Price = row[nameof(Apartment.Price)].ToString();
             apartment.City = GetCityByID(apartment.Id);
             apartment.StatusId = row[nameof(Apartment.StatusId)].ToString();
             apartment.BeachDistance = row[nameof(Apartment.BeachDistance)].ToString();
@@ -306,7 +356,7 @@ namespace rwaLib.Dal
         {
 
             var tblCity = SqlHelper.ExecuteDataset(CS, nameof(GetCityByID), id).Tables[0];
-            if (tblCity == null) return null;
+            if (tblCity.Rows.Count == 0) return null;
             DataRow row = tblCity.Rows[0];
 
             return row[nameof(City.Name)].ToString();

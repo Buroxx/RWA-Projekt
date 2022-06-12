@@ -52,6 +52,7 @@
     <Compile Include="Models\ApartmentPicture.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Cryptography.cs" />
+    <Compile Include="Models\Owner.cs" />
     <Compile Include="Models\Tags.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
