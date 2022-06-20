@@ -1,0 +1,20 @@
+﻿@using RWA_Javni.Models
+@model User
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <h1>Dobrodošao, <b>@Model.Email</b></h1>
+        <p>Prijavljen si kao: <i>@Model.Roles[0]</i></p>
+        @Html.ActionLink("Administracija", "Administration", "Dashboard")
+        @Html.ActionLink("Korsnici", "Basic", "Dashboard")
+        @Html.ActionLink("Odjava", "Logout", "Home")
+    </div>
+</body>
+</html>
