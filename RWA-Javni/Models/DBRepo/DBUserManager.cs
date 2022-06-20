@@ -1,4 +1,5 @@
 ﻿using Microsoft.ApplicationBlocks.Data;
+using rwaLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,25 +13,34 @@ namespace RWA_Javni.Models.DBRepo
     {
         private static string CS = ConfigurationManager.ConnectionStrings["cs"].ConnectionString;
 
-        public static IList<User> GetAllUsers()
+        //public static IList<User> GetAllUsers()
+        //{
+        //    IList<User> users = new List<User>();
+
+        //    var tblUsers = SqlHelper.ExecuteDataset(CS, nameof(GetAllUsers)).Tables[0];
+        //    if (tblUsers == null) return null;
+
+        //    foreach (DataRow row in tblUsers.Rows)
+        //    {
+        //        users.Add(new User
+        //        {
+        //            UserName = row[nameof(User.UserName)].ToString(),
+        //            Email = row[nameof(User.Email)].ToString(),
+        //            Password = row["PasswordHash"].ToString(),
+        //        });
+        //    }
+
+        //    return users;
+        //}
+
+
+
+        public static void CreateNewUser(User u)
         {
-            IList<User> users = new List<User>();
-
-            var tblUsers = SqlHelper.ExecuteDataset(CS, nameof(GetAllUsers)).Tables[0];
-            if (tblUsers == null) return null;
-
-            foreach (DataRow row in tblUsers.Rows)
-            {
-                users.Add(new User
-                {
-                    UserName = row[nameof(User.UserName)].ToString(),
-                    Email = row[nameof(User.Email)].ToString(),
-                    Password = row[nameof(User.Password)].ToString(),
-                });
-            }
-
-            return users;
+            SqlHelper.ExecuteNonQuery(CS, nameof(CreateNewUser), u.UserName, u.Email, Cryptography.HashPassword(u.Password), u.PhoneNumber, u.Address);
         }
+
+
 
     }
 }

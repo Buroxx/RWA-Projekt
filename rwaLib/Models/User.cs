@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,10 +13,20 @@ namespace rwaLib.Models
         private const char DELIMITER = '|';
 
         public int Id { get; set; }
+        [Required(ErrorMessage = "Username can't be empty")]
         public string UserName { get; set; }
+
+        [Required(ErrorMessage = "Password can't be empty")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "Email can't be empty")]
+        [EmailAddress(ErrorMessage ="Wrong e-mail type")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "Phone can't be empty")]
         public string PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "Address can't be empty")]
         public string Address { get; set; }
 
         public string FirstName
