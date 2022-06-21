@@ -8,11 +8,38 @@
 </head>
 <body>
 
-
-    <div class="container py-3">
+    <nav class='navbar navbar-expand-lg navbar-light bg-light'>
+        <div class='container-fluid'>
+            <img src="E:\Projekti\PROJEKT RWA\RWA-Projekt\RWA-Projekt\Images\logo.jpg" width="120" height="50" style="object-fit:scale-down">
+            <a class="navbar-brand">
+                RWA Apartments Admin
+            </a>
+            <button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
+                <span class='navbar-toggler-icon'></span>
+            </button>
+            <div class='collapse navbar-collapse' id='navbarSupportedContent'>
+                <ul class='navbar-nav me-auto mb-2 mb-lg-0'>
+                    <li class='nav-item'>
+                        <a class='nav-link' href='AdministratorApartments.aspx' runat="server" meta:resourcekey="aLogin">Search</a>
+                    </li>
+                    <li class='nav-item'>
+                        <a class='nav-link' href='AdministratorTags.aspx' runat="server" meta:resourcekey="aRegistration">Contact</a>
+                    </li>
+                    <li class='nav-item'>
+                        <a class='nav-link' href='AdministratorRegisteredUsers.aspx' runat="server" meta:resourcekey="aRegisteredUsers">About Us</a>
+                    </li>
+                </ul>
+                @*<ul class='navbar-nav d-flex'>
+                    <li class='nav-item'>
+                        <asp:Button class='nav-link btn btn-danger text-white' ID="btnLogout" meta:resourcekey="btnLogout" runat="server" Text="Logout" OnClick="btnLogout_Click" />
+                    </li>
+                </ul>*@
+            </div>
+        </div>
+    </nav>
+    <div class="">
         @RenderBody()
     </div>
-
     @Scripts.Render("~/Scripts")
 </body>
 </html>

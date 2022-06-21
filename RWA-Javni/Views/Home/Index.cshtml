@@ -1,6 +1,8 @@
 ﻿
 @{
     Layout = null;
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    List<SelectListItem> itemsToPick = ViewBag.itemsToPick as List<SelectListItem>;
 }
 
 <!DOCTYPE html>
@@ -9,9 +11,67 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
+    <style>
+        .filter {
+            width:150px;
+        }
+    </style>
 </head>
 <body>
-    <div> 
+
+    <div style="text-align:center">
+        @Html.TextBox("searchApartment", null, new {@style = "width:700px;align:middle;", @placeholder = "Search apartments"})
     </div>
+
+    <div class="p-lg-2 d-flex filter">
+        <div class="w-75">
+        @Html.Label(labelText: "Rooms: ", expression: "rooms")
+        </div>
+        @Html.TextBox("rooms", null, new {@type = "number", @min = "0", @style = "width:50px;"})
+    </div>
+
+    <div class="p-lg-2 d-flex filter">
+        <div class="w-75">
+        @Html.Label(labelText: "Adults: ", expression: "adults")
+        </div>
+        @Html.TextBox("adults", null, new { @type = "number", @min = "0", @style = "width:50px;"})
+    </div>
+
+    <div class="p-lg-2 d-flex filter">
+        <div class="w-75">
+        @Html.Label(labelText: "Children: ", expression: "children")
+        </div>
+        @Html.TextBox("children", null, new { @type = "number", @min = "0", @style = "width:50px;" })
+    </div>
+
+    <div class="p-lg-2">
+        @Html.Label(labelText: "Destination", expression: "destination")
+        @Html.DropDownList(name:"ddlCity",selectList: itemsToPick, optionLabel: "--pick--")
+    </div>
+
+    <div class="d-flex m-lg-1" style="float:right">
+        @Html.Label(labelText: "Sort by", expression:"sort")
+        @Html.DropDownList(name: "ddlSort", selectList: new List<SelectListItem> { new SelectListItem { Text = "Asc", Value = "0" }, new SelectListItem { Text = "Desc", Value = "1" } }, optionLabel:"--none--", htmlAttributes: new {@style = "width:100px;"})
+    </div>
+
+    <div class="mt-5 d-flex" style="width:300px;">
+        <div>
+            <img src="E:\Projekti\PROJEKT RWA\RWA-Projekt\RWA-Javni\petty.jpg" alt="Image"/>
+            <img src='@Url.Content(@"E:\Projekti\PROJEKT RWA\RWA-Projekt\RWA-Javni\petty.jpg")'
+
+ alt="Image"/>
+        </div>
+        <div class="" style="padding-left:20px;">
+            <p>Zadar</p>
+            <p>2 rooms</p>
+            <p>2 adults</p>
+            <p>3 children</p>
+            <p>100€</p>
+            <button>Reserve</button>
+        </div>
+    </div>
+
+
+
 </body>
 </html>
