@@ -1,0 +1,174 @@
+﻿@using rwaLib.Models
+@{
+    ViewBag.Title = "Reserve";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    Apartment apartment = ViewBag.apartment as Apartment;
+    IList<ApartmentPicture> pictures = ViewBag.pictures as List<ApartmentPicture>;
+    string owner = ViewBag.owner as string;
+    IList<Tags> tags = ViewBag.tags as List<Tags>;
+}
+
+<style>
+    .leftside, .rightside {
+        height: 80vh;
+        width: 100%;
+    }
+
+    .leftside {
+        margin-left: 10px;
+    }
+</style>
+
+<div class="row">
+    <div class="col">
+        <div class="leftside">
+            <p>
+                <b>@apartment.Name - @apartment.City</b>
+            </p>
+            <div class="d-flex flex-row">
+                <div>
+                    @foreach (ApartmentPicture picture in pictures)
+                    {
+                        if (picture.IsRepresentative)
+                        {
+                            <img src="@picture.Path" style="width:350px; height:300px;" />
+                        }
+                    }
+                </div>
+                <div style="margin-left:10px; padding-top:10px;">
+                    <p>@apartment.City</p>
+                    <p>Beach distance:@apartment.BeachDistance m</p>
+                    <p>Rooms: @apartment.TotalRooms</p>
+                    <p>Adults: @apartment.MaxAdults</p>
+                    <p>Children: @apartment.MaxChildren</p>
+                    <p>Owner: @owner</p>
+                    @for (int i = 0; i < apartment.Review; i++)
+                    {
+                        <b>&#9733;</b>
+                    }
+                </div>
+            </div>
+            <p style="margin-top:10px;">@apartment.Price €</p>
+            <div>
+                <b>Tags:</b>
+                @foreach (Tags tag in tags)
+                {
+                    <p style="margin:0;">
+                        &rarr;@tag.NameEng
+                    </p>
+                }
+            </div>
+
+
+        </div>
+        @Html.Hidden("apartmentID", new { Id = ViewBag.apartmentId })
+    </div>
+    <div class="col">
+        <div class="rightside" style="border-left:5px solid grey; padding-left:10px;">
+            <div style="width:80%;">
+                <h2>Contact</h2>
+                <form id="myform">
+                    <p>Name: @Html.TextBox("firstName") @Html.TextBox("lastName")</p>
+                    <p>E-mail: @Html.TextBox("email", null, new { @type = "email", @style = "width:82%;" })</p>
+                    <p>Phone/mobile: @Html.TextBox("phone", null, new { @style = "width:60%;", @type = "phone" })</p>
+                    <p>Adults: @Html.TextBox("adults", null, new { @type = "number", @min = "0", @style = "width:10%;" }) Children: @Html.TextBox("children", null, new { @type = "number", @min = "0", @style = "width:10%" })</p>
+                    <p>From @Html.TextBox("dateFrom", null, new { @type = "date" })</p>
+                    <p>To @Html.TextBox("dateTo", null, new { @type = "date" })</p>
+                    <div>
+                        <input id="test" type="submit" value="Reservation" />
+                    </div>
+                </form>
+                <form method="post" class="mt-2" onsubmit="return submitUserForm();">
+                    <div class="g-recaptcha" data-sitekey="6LcuZJ0gAAAAAJzwMl9hb_XzafpzUNk6NubaaBbI" data-callback="verifyCaptcha"></div>
+                    <div id="g-recaptcha-error"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script>
+        $(document).ready(function () {
+            $("#test").hide();
+        })
+        var recaptcha_response = '';
+        function submitUserForm() {
+            if (recaptcha_response.length == 0) {
+                document.getElementById('g-recaptcha-error').innerHTML = '<span style="color:red;">This field is required.</span>';
+                return false;
+            }
+            return true;
+        }
+
+        function verifyCaptcha(token) {
+            recaptcha_response = token;
+            document.getElementById('g-recaptcha-error').innerHTML = '';
+            $("#test").show();
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            $('#myform').validate({
+                rules: {
+                    firstName: "required",
+                    lastName: "required",
+                    email: {
+                       required: true,
+                       email: true
+                    },
+                    phone: "required",
+                   adults: "required",
+                    children: "required",
+                    dateFrom: "required",
+                   dateTo: "required"
+                },
+                submitHandler: function (form) {
+                    var values = {
+                        ApartmentId: $("#apartmentID").val(),
+                        FirstName: $("#firstName").val(),
+                        LastName: $("#lastName").val(),
+                        Email: $("#email").val(),
+                        Phone: $("#phone").val(),
+                        Adults: $("#adults").val(),
+                        Children: $("#children").val(),
+                        DateFrom: $("#dateFrom").val(),
+                        DateTo: $("#dateTo").val()
+                    }
+                    var obj = {
+                        ApartmentId: values.ApartmentId,
+                        FirstName: values.FirstName,
+                        LastName: values.LastName,
+                        Email: values.Email,
+                        Phone: values.Phone,
+                        Adults: values.Adults,
+                        Children: values.Children,
+                        DateFrom: values.DateFrom,
+                        DateTo: values.DateTo
+                    };
+                    $.ajax({
+                        url: '@Url.Action("SendReservation", "Home")',
+                        method: "POST",
+                        data: obj,
+                        success: function () {
+                            alert("Message sent!");
+                        },
+                        error: function (err) {
+                            alert("Ne radi nesta");
+                        }
+                    });
+                    $("#test").hide();
+                    return false;
+                }
+            });
+
+        });
+    </script>
+
+} 

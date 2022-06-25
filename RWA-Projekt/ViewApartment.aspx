@@ -35,7 +35,7 @@
         <asp:Repeater ID="rptImgs" runat="server">
             <ItemTemplate>
                 <div class="mySlides">
-                    <img src="<%# Eval(nameof(rwaLib.Models.ApartmentPicture.Path)) %>" style="width: 100%">
+                    <img src="<%# Eval(nameof(rwaLib.Models.ApartmentPicture.Path)) %>" style="width: 100%"/>
                 </div>
             </ItemTemplate>
         </asp:Repeater>

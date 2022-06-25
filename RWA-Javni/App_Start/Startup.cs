@@ -4,7 +4,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using RWA_Javni.Models;
-using RWA_Javni.Models.Auth;
+//using RWA_Javni.Models.Auth;
 using System;
 using System.Threading.Tasks;
 

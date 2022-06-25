@@ -1,8 +1,10 @@
-﻿
+﻿@using rwaLib.Models
 @{
     Layout = null;
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
     List<SelectListItem> itemsToPick = ViewBag.itemsToPick as List<SelectListItem>;
+    List<Apartment> apartments = ViewBag.apartments as List<Apartment>;
+    List<ApartmentPicture> pictureList = ViewBag.pictureList as List<ApartmentPicture>;
 }
 
 <!DOCTYPE html>
@@ -13,65 +15,92 @@
     <title>Index</title>
     <style>
         .filter {
-            width:150px;
+            width: 150px;
         }
     </style>
 </head>
 <body>
-
-    <div style="text-align:center">
-        @Html.TextBox("searchApartment", null, new {@style = "width:700px;align:middle;", @placeholder = "Search apartments"})
-    </div>
-
-    <div class="p-lg-2 d-flex filter">
-        <div class="w-75">
-        @Html.Label(labelText: "Rooms: ", expression: "rooms")
+    @using (Html.BeginForm("Index", "Home"))
+    {
+        <div class="p-lg-2 d-flex filter">
+            <div class="w-75">
+                @Html.Label(labelText: "Rooms: ", expression: "rooms")
+            </div>
+            @Html.TextBox("rooms", null, new { @type = "number", @min = "0", @style = "width:50px;" })
         </div>
-        @Html.TextBox("rooms", null, new {@type = "number", @min = "0", @style = "width:50px;"})
-    </div>
 
-    <div class="p-lg-2 d-flex filter">
-        <div class="w-75">
-        @Html.Label(labelText: "Adults: ", expression: "adults")
+        <div class="p-lg-2 d-flex filter">
+            <div class="w-75">
+                @Html.Label(labelText: "Adults: ", expression: "adults")
+            </div>
+            @Html.TextBox("adults", null, new { @type = "number", @min = "0", @style = "width:50px;" })
         </div>
-        @Html.TextBox("adults", null, new { @type = "number", @min = "0", @style = "width:50px;"})
-    </div>
 
-    <div class="p-lg-2 d-flex filter">
-        <div class="w-75">
-        @Html.Label(labelText: "Children: ", expression: "children")
+        <div class="p-lg-2 d-flex filter">
+            <div class="w-75">
+                @Html.Label(labelText: "Children: ", expression: "children")
+            </div>
+            @Html.TextBox("children", null, new { @type = "number", @min = "0", @style = "width:50px;" })
         </div>
-        @Html.TextBox("children", null, new { @type = "number", @min = "0", @style = "width:50px;" })
-    </div>
 
-    <div class="p-lg-2">
-        @Html.Label(labelText: "Destination", expression: "destination")
-        @Html.DropDownList(name:"ddlCity",selectList: itemsToPick, optionLabel: "--pick--")
-    </div>
+        <div class="p-lg-2">
+            <input type="submit" value="FILTER" class="btn btn-warning" />
+            @Html.ActionLink("RESET", "Index", null, new { @class = "btn btn-warning" })
+        </div>
+    }
+
 
     <div class="d-flex m-lg-1" style="float:right">
-        @Html.Label(labelText: "Sort by", expression:"sort")
-        @Html.DropDownList(name: "ddlSort", selectList: new List<SelectListItem> { new SelectListItem { Text = "Asc", Value = "0" }, new SelectListItem { Text = "Desc", Value = "1" } }, optionLabel:"--none--", htmlAttributes: new {@style = "width:100px;"})
+        @Html.Label(labelText: "Sort by", expression: "sort")
+        @Html.DropDownList(name: "ddlSort", selectList: new List<SelectListItem> { new SelectListItem { Text = "Asc", Value = "0", Selected = ViewBag.pickedSort == "Asc" ? true : false }, new SelectListItem { Text = "Desc", Value = "1", Selected = ViewBag.pickedSort == "Desc" ? true : false } }, optionLabel: "Default", htmlAttributes: new { @style = "width:100px;" });
     </div>
 
-    <div class="mt-5 d-flex" style="width:300px;">
-        <div>
-            <img src="E:\Projekti\PROJEKT RWA\RWA-Projekt\RWA-Javni\petty.jpg" alt="Image"/>
-            <img src='@Url.Content(@"E:\Projekti\PROJEKT RWA\RWA-Projekt\RWA-Javni\petty.jpg")'
-
- alt="Image"/>
+    <br />
+    @if (apartments != null)
+    {
+        <div class="d-flex flex-row flex-wrap justify-content-around" style="margin:0 auto">
+            @foreach (Apartment apartment in apartments)
+            {
+                <div class="d-flex" style="width:400px; height:300px;">
+                    <div>
+                        @foreach (ApartmentPicture picture in pictureList)
+                        {
+                            if (apartment.Id == picture.ApartmentId && picture.IsRepresentative)
+                            {
+                                <img src="@picture.Path" width="350" height="300" style="object-fit:cover" />
+                            }
+                        }
+                    </div>
+                    <div class="d-flex flex-column" style="padding-left:20px; padding-top:60px;">
+                        <p style="margin:0">
+                            @for (int i = 0; i < apartment.Review; i++)
+                            {
+                                <b>&#9733;</b>
+                            }
+                        </p>
+                        <p style="margin:0"><b>@apartment.Name</b></p>
+                        <p style="margin:0">Rooms: @apartment.TotalRooms</p>
+                        <p style="margin:0">Adults: @apartment.MaxAdults</p>
+                        <p style="margin:0">Children: @apartment.MaxChildren</p>
+                        <p style="margin:0">Price: <b>@apartment.Price€</b></p>
+                        @Html.ActionLink("RESERVE", "Reserve", new { apartmentID = apartment.Id }, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            }
         </div>
-        <div class="" style="padding-left:20px;">
-            <p>Zadar</p>
-            <p>2 rooms</p>
-            <p>2 adults</p>
-            <p>3 children</p>
-            <p>100€</p>
-            <button>Reserve</button>
-        </div>
-    </div>
+    }
 
+    @section scripts {
 
-
+        <script>
+            $(document).ready(function () {
+                $("#ddlSort").change(function () {
+                    var current = $('option:selected', $(this)).text();
+                    var url = '@Url.Action("Index","Home")?sortOrder=' + current
+                    window.location.href = url;
+                });
+            });
+        </script>
+    }
 </body>
 </html>

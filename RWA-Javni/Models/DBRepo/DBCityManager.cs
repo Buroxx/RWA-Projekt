@@ -30,5 +30,22 @@ namespace RWA_Javni.Models.DBRepo
             }
             return cities;
         }
+
+        public static string GetCityByID(int id)
+        {
+
+            var tblCity = SqlHelper.ExecuteDataset(CS, nameof(GetCityByID), id).Tables[0];
+            if (tblCity.Rows.Count == 0) return null;
+            DataRow row = tblCity.Rows[0];
+
+            return row[nameof(City.Name)].ToString();
+        }
+
+
+
+
+
+
+
     }
 }

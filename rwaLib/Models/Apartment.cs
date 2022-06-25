@@ -24,5 +24,6 @@ namespace rwaLib.Models
         public int NumberOfPictures { get; set; }
         public int OwnerID { get; set; }
         public string Address { get; set; }
+        public int Review { get; set; }
     }
 }
