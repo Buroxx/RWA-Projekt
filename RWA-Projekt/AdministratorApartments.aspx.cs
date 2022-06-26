@@ -18,7 +18,12 @@ namespace RWA_Projekt
         {
             User owner = (User)Session["user"];
 
-            //listOfAllApartments = ((DBRepo)Application["database"]).GetApartmentByOwnerID(owner.Id);
+            if(Session["user"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
+
+
             listOfAllApartments = ((DBRepo)Application["database"]).GetAllApartments();
 
             if (!IsPostBack)

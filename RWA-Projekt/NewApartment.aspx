@@ -33,30 +33,30 @@
 
             <div>
                 <asp:Label runat="server" ID="lblPrice" Text="Price(€):" />
-                <asp:TextBox ID="tbPrice" runat="server" Width="50px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
+                <asp:TextBox ID="tbPrice" runat="server" Width="70px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
                 <asp:RequiredFieldValidator ValidationGroup="Step1" ID="RequiredFieldValidator1" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbPrice" Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
 
             <div>
                 <asp:Label runat="server" ID="lblAdults" Text="Adult rooms:" />
-                <asp:TextBox ID="tbAdults" runat="server" Width="50px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
+                <asp:TextBox ID="tbAdults" runat="server" Width="70px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
                 <asp:RequiredFieldValidator ValidationGroup="Step1" ID="rfvAdults" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbAdults" Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
 
             <div>
                 <asp:Label runat="server" ID="lblChildren" Text="Children rooms:" />
-                <asp:TextBox ID="tbChildren" runat="server" Width="50px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
+                <asp:TextBox ID="tbChildren" runat="server" Width="70px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
                 <asp:RequiredFieldValidator ValidationGroup="Step1" ID="rfvChildren" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbChildren" Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
 
             <div>
                 <asp:Label runat="server" ID="lblRooms" Text="Total rooms:" />
-                <asp:TextBox ID="tbRooms" runat="server" Width="50px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
+                <asp:TextBox ID="tbRooms" runat="server" Width="70px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
                 <asp:RequiredFieldValidator ValidationGroup="Step1" ID="rfvRooms" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbRooms" Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
             <div>
                 <asp:Label runat="server" ID="Label7" Text="Beach distance: " />
-                <asp:TextBox ValidationGroup="Step1" ID="tbBeachDistance" runat="server" Width="55px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
+                <asp:TextBox ValidationGroup="Step1" ID="tbBeachDistance" runat="server" Width="70px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
                 <asp:RequiredFieldValidator ValidationGroup="Step1" ID="rfvBeach" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbBeachDistance" Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
         </div>
@@ -83,6 +83,7 @@
     <asp:Panel ID="pnlTags" runat="server" Visible="false" CssClass="table d-flex justify-content-center">
         <div class="d-flex justify-content-center">
             <label>Step 2: Tags</label>
+            <br />
         </div>
         <asp:Repeater ID="rptTags" runat="server">
             <HeaderTemplate>
@@ -200,7 +201,7 @@
                 <div class="d-flex justify-content-center mt-1">
                     <img src="<%# Eval(nameof(rwaLib.Models.ApartmentPicture.Path)) %>" style="width: 300px; height: 300px">
                 </div>
-                <div>
+                <div class="d-flex justify-content-center">
                     <asp:Button Text="REPRESENTATIVE" runat="server" ID="pickRepresentative" CssClass="btn btn-primary d-flex justify-content-center mt-1 mb-2" OnClick="pickRepresentative_Click" CommandArgument="<%# Eval(nameof(rwaLib.Models.ApartmentPicture.Id)) %>" />
                 </div>
             </ItemTemplate>
@@ -209,7 +210,7 @@
 
     <asp:Panel runat="server" ID="pnlFinish">
         <div class="d-flex justify-content-center mt-2">
-            <asp:Button Text="FINISH" runat="server" ID="finish" OnClick="finish_Click" />
+            <asp:Button Text="FINISH" runat="server" ID="finish" OnClick="finish_Click" CssClass="btn btn-success" />
         </div>
     </asp:Panel>
 

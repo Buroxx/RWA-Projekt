@@ -11,10 +11,17 @@ namespace RWA_Projekt
 {
     public partial class AdministratorRegisteredUsers : System.Web.UI.Page
     {
+
         IList<User> users = new List<User>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            if (Session["user"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
+
             if (!IsPostBack)
             {
                 LoadData();

@@ -11,7 +11,11 @@ namespace RWA_Projekt
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Session["user"]!=null)
+            {
+                pnlRegistered.Visible = true;
+                pnlLogout.Visible = true;
+            }
         }
 
         protected void btnLogout_Click(object sender, EventArgs e)

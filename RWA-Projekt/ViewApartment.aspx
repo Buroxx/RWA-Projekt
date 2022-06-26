@@ -82,7 +82,7 @@
             </div>
             <div>
                 <asp:Label runat="server" ID="Label7" Text="Beach distance: " />
-                <asp:TextBox ID="tbBeachDistance" runat="server" Width="60px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
+                <asp:TextBox ID="tbBeachDistance" runat="server" Width="70px" CssClass="form-control" TextMode="Number" min="0"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="rfvBeach" runat="server" ErrorMessage="Empty field!" Font-Bold="true" ForeColor="Red" ControlToValidate="tbBeachDistance" Display="Dynamic"></asp:RequiredFieldValidator>
             </div>
         </div>
@@ -111,7 +111,7 @@
     <%-- STATUS --%>
     <div class="d-flex justify-content-center mt-2 gap-4 align-align-items-center">
         <asp:Label runat="server" ID="lbStatus" Text="Status: " />
-        <asp:DropDownList ID="ddlStatus" runat="server" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged" AutoPostBack="true" CssClass="form-control"></asp:DropDownList>
+        <asp:DropDownList ID="ddlStatus" runat="server" Width="100px" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged" AutoPostBack="true" CssClass="form-control"></asp:DropDownList>
     </div>
 
 

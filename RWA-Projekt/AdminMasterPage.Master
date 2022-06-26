@@ -14,7 +14,7 @@
     <form id="Web_app" runat="server">
         <nav class='navbar navbar-expand-lg navbar-light bg-light'>
             <div class='container-fluid'>
-                    <img src="/Images/logo.jpg" width="120" height="50" style="object-fit:scale-down">
+                 <img src="/Images/logo.jpg" width="120" height="50" style="object-fit:scale-down">
                 <a class="navbar-brand">
                     RWA Apartments Admin
                 </a>
@@ -23,6 +23,7 @@
                 </button>
                 <div class='collapse navbar-collapse' id='navbarSupportedContent'>
                     <ul class='navbar-nav me-auto mb-2 mb-lg-0'>
+                <asp:Panel runat="server" ID="pnlRegistered" Visible="false" CssClass="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class='nav-item'>
                             <a class='nav-link' href='AdministratorApartments.aspx' runat="server" meta:resourcekey="aLogin">Apartments</a>
                         </li>
@@ -32,13 +33,15 @@
                         <li class='nav-item'>
                             <a class='nav-link' href='AdministratorRegisteredUsers.aspx' runat="server" meta:resourcekey="aRegisteredUsers">Registered users</a>
                         </li>
+                </asp:Panel>
                     </ul>
                     <ul class='navbar-nav d-flex'>
                         <li class='nav-item'>
+                            <asp:Panel runat="server" ID="pnlLogout" Visible="false">
                             <asp:Button class='nav-link btn btn-danger text-white' ID="btnLogout" meta:resourcekey="btnLogout" runat="server" Text="Logout" OnClick="btnLogout_Click" />
+                            </asp:Panel>
                         </li>
                     </ul>
-
                 </div>
             </div>
         </nav>

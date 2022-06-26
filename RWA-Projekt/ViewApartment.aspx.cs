@@ -332,8 +332,7 @@ namespace RWA_Projekt
             pnlTags.Visible = false;
             pnlButtonAddTag.Visible = false;
             pnlPickNewTag.Visible = false;
-
-            pnlAddNewPicture.Visible = true;
+            pnlAddNewPicture.Visible = false;
 
         }
 

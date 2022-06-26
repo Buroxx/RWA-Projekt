@@ -22,10 +22,6 @@ namespace RWA_Javni.Controllers
             apartments = DBApartmentManager.GetAllApartments();
             pictureList = DBPictureManager.GetAllApartmentPictures();
 
-          
-
-
-
             if (sortOrder == "Asc")
             {
             apartments = apartments.OrderBy(x => x.Name).ToList();
@@ -36,7 +32,6 @@ namespace RWA_Javni.Controllers
             {
                 apartments = apartments.OrderBy(x => x.Id).ToList();
             }
-
 
             ViewBag.apartments = apartments;
             ViewBag.pictureList = pictureList;
