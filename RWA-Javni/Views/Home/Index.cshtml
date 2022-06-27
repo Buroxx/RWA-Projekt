@@ -1,10 +1,16 @@
-﻿@using rwaLib.Models
+﻿@using rwaLib.Models;
 @{
-    Layout = null;
-    Layout = "~/Views/Shared/_LayoutPage.cshtml";
     List<SelectListItem> itemsToPick = ViewBag.itemsToPick as List<SelectListItem>;
     List<Apartment> apartments = ViewBag.apartments as List<Apartment>;
     List<ApartmentPicture> pictureList = ViewBag.pictureList as List<ApartmentPicture>;
+    if (Session["user"] == null)
+    {
+        Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutPageLoggedIn.cshtml";
+    }
 }
 
 <!DOCTYPE html>

@@ -1,11 +1,20 @@
 ﻿@using rwaLib.Models
 @{
     ViewBag.Title = "Reserve";
-    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    if (Session["user"] == null)
+    {
+        Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutPageLoggedIn.cshtml";
+    }
     Apartment apartment = ViewBag.apartment as Apartment;
     IList<ApartmentPicture> pictures = ViewBag.pictures as List<ApartmentPicture>;
     string owner = ViewBag.owner as string;
     IList<Tags> tags = ViewBag.tags as List<Tags>;
+    User u = Session["user"] as User;
+
 }
 
 <head>
@@ -68,22 +77,6 @@
                     </p>
                 }
             </div>
-
-            <div class="swiper mt-2">
-                <div class="swiper-wrapper">
-                    @foreach (ApartmentPicture picture in pictures)
-                    {
-                        <div class="swiper-slide"><img src="@picture.Path" /></div>
-                    }
-                </div>
-
-
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-
-            </div>
-
-
         </div>
         @Html.Hidden("apartmentID", new { Id = ViewBag.apartmentId })
     </div>
@@ -91,25 +84,68 @@
         <div class="rightside" style="border-left:5px solid grey; padding-left:10px;">
             <div style="width:80%;">
                 <h2>Contact</h2>
-                <form id="myform">
-                    <p>Name: @Html.TextBox("firstName") @Html.TextBox("lastName")</p>
-                    <p>E-mail: @Html.TextBox("email", null, new { @type = "email", @style = "width:82%;" })</p>
-                    <p>Phone/mobile: @Html.TextBox("phone", null, new { @style = "width:60%;", @type = "phone" })</p>
-                    <p>Adults: @Html.TextBox("adults", null, new { @type = "number", @min = "0", @style = "width:10%;" }) Children: @Html.TextBox("children", null, new { @type = "number", @min = "0", @style = "width:10%" })</p>
-                    <p>From @Html.TextBox("dateFrom", null, new { @type = "date" })</p>
-                    <p>To @Html.TextBox("dateTo", null, new { @type = "date" })</p>
-                    <div>
-                        <input id="test" type="submit" value="Reservation" />
-                    </div>
-                </form>
+                @if (Session["user"] != null)
+                {
+                    <form id="myform">
+                        <p>Name: @Html.TextBox("firstName", @u.FirstName) @Html.TextBox("lastName", u.LastName)</p>
+                        <p>E-mail: @Html.TextBox("email", u.Email, new { @type = "email", @style = "width:82%;" })</p>
+                        <p>Phone/mobile: @Html.TextBox("phone", u.PhoneNumber, new { @style = "width:60%;", @type = "phone" })</p>
+                        <p>Adults: @Html.TextBox("adults", null, new { @type = "number", @min = "0", @style = "width:10%;" }) Children: @Html.TextBox("children", null, new { @type = "number", @min = "0", @style = "width:10%" })</p>
+                        <p>From @Html.TextBox("dateFrom", null, new { @type = "date" })</p>
+                        <p>To @Html.TextBox("dateTo", null, new { @type = "date" })</p>
+                        <div>
+                            <input id="test" type="submit" value="Reservation" class="btn btn-success" />
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <form id="myform">
+                        <p>Name: @Html.TextBox("firstName") @Html.TextBox("lastName")</p>
+                        <p>E-mail: @Html.TextBox("email", null, new { @type = "email", @style = "width:82%;" })</p>
+                        <p>Phone/mobile: @Html.TextBox("phone", null, new { @style = "width:60%;", @type = "phone" })</p>
+                        <p>Adults: @Html.TextBox("adults", null, new { @type = "number", @min = "0", @style = "width:10%;" }) Children: @Html.TextBox("children", null, new { @type = "number", @min = "0", @style = "width:10%" })</p>
+                        <p>From @Html.TextBox("dateFrom", null, new { @type = "date" })</p>
+                        <p>To @Html.TextBox("dateTo", null, new { @type = "date" })</p>
+                        <div>
+                            <input id="test" type="submit" value="Reservation" class="btn btn-success" />
+                        </div>
+                    </form>
+                }
                 <form method="post" class="mt-2" onsubmit="return submitUserForm();">
                     <div class="g-recaptcha" data-sitekey="6LcuZJ0gAAAAAJzwMl9hb_XzafpzUNk6NubaaBbI" data-callback="verifyCaptcha"></div>
                     <div id="g-recaptcha-error"></div>
                 </form>
+                @if (Session["user"] != null)
+                {
+                    <h2>Review</h2>
+                    <form id="myformreview">
+                        <p>Description: @Html.TextBox("description", null, new { @style = "width:400px;" })</p>
+                        <p>Stars: @Html.TextBox("stars", null, new { @type = "number", @min = "1", @max = "5" })</p>
+                        <div>
+                            <input id="btnReview" type="submit" value="Review" class="btn btn-success" />
+                        </div>
+                    </form>
+                    @Html.Hidden("userId", u.Id)
+                    @Html.Hidden("apartmentId", apartment.Id)
+                }
             </div>
         </div>
     </div>
 </div>
+    <div class="swiper mt-2">
+        <div class="swiper-wrapper">
+            @foreach (ApartmentPicture picture in pictures)
+            {
+                <div class="swiper-slide"><img src="@picture.Path" /></div>
+            }
+        </div>
+
+
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+
+    </div>
 
 
 
@@ -168,6 +204,48 @@
             $("#test").show();
         }
     </script>
+
+    @if (Session["user"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+
+                $('#myformreview').validate({
+                rules: {
+                    description: "required",
+                    stars: "required"
+                },
+                submitHandler: function (form) {
+                    var obj = {
+                        userId: $("#userId").val(),
+                        stars: $("#stars").val(),
+                        description: $("#description").val(),
+                        apartmentId: $("#apartmentId").val()
+                    };
+                    $.ajax({
+                        url: '@Url.Action("SendReview", "Home")',
+                        method: "POST",
+                        data: obj,
+                        success: function () {
+                            alert("Review posted!");
+                        },
+                        error: function (err) {
+                            alert("Ne radi nesta");
+                        }
+                    });
+                    $("#btnReview").hide();
+                    return false;
+                }
+            });
+
+        });
+        </script>
+    }
+
+
+
+
+
     <script>
         $(document).ready(function () {
 

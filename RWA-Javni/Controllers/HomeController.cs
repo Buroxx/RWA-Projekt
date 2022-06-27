@@ -4,13 +4,16 @@ using rwaLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace RWA_Javni.Controllers
-{
+{   
     public class HomeController : Controller
     {
-        // GET: Home
+       
+
         public ActionResult Index(string sortOrder)
         {
            
@@ -58,6 +61,7 @@ namespace RWA_Javni.Controllers
         [HttpPost]
         public ActionResult Index(int rooms = 0, int adults = 0, int children = 0)
         {
+
             IList<Apartment> apartments = new List<Apartment>();
             apartments = DBApartmentManager.GetAllApartments();
 
@@ -109,6 +113,16 @@ namespace RWA_Javni.Controllers
             if (reservation == null) return Json("failed");
 
             DBReservationManager.AddNewReservation(reservation);
+
+            return Json("success");
+        }  
+        
+        [HttpPost]
+        public JsonResult SendReview(Review review)
+        {
+            if (review == null) return Json("failed");
+
+            DBReviewManager.AddNewReview(review);
 
             return Json("success");
         }

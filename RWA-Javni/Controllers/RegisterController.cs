@@ -13,6 +13,10 @@ namespace RWA_Javni.Controllers
         // GET: Register
         public ActionResult Index()
         {
+            if (Session["user"]!=null)
+            {
+                return RedirectToAction("Home", "Index");
+            }
             return View();
         }
 
