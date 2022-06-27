@@ -27,7 +27,7 @@ namespace RWA_Javni.Controllers
             if (ModelState.IsValid)
             {
                 DBUserManager.CreateNewUser(u);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Login");
             }
             else
             {

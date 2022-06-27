@@ -24,7 +24,7 @@
 
 <style>
     .leftside, .rightside {
-        height: 100vh;
+        /*height: 100vh;*/
         width: 100%;
     }
 
@@ -33,8 +33,8 @@
     }
 
     .swiper {
-        width: 600px;
-        height: 300px;
+        width: 800px;
+        height: 500px;
     }
 </style>
 
@@ -133,22 +133,19 @@
         </div>
     </div>
 </div>
-    <div class="swiper mt-2">
-        <div class="swiper-wrapper">
-            @foreach (ApartmentPicture picture in pictures)
-            {
-                <div class="swiper-slide"><img src="@picture.Path" /></div>
-            }
-        </div>
 
 
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
 
+<div class="swiper">
+    <div class="swiper-wrapper">
+        @foreach (ApartmentPicture picture in pictures)
+        {
+            <div class="swiper-slide" style="object-fit:scale-down;"><img src="@picture.Path" /></div>
+        }
     </div>
-
-
-
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+</div>
 
 
 

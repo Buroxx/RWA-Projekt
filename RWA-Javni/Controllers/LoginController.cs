@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using RWA_Javni.Models.DBRepo;
+using RWA_Javni.Models.ViewModels;
 using rwaLib.Models;
 using System;
 using System.Collections.Generic;
@@ -17,34 +18,26 @@ namespace RWA_Javni.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            if (Session["user"]!=null)
+            if (Session["user"] != null)
             {
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(User u)
+        public ActionResult Index(LoginUser u)
         {
             if (ModelState.IsValid)
             {
-                return View(u);
-            }
-
-            User user = DBUserManager.AuthUser(u.UserName, Cryptography.HashPassword(u.Password));
-
-            if (user == null)
-            {
-                return RedirectToAction("Index","Login");
-            }
-            else
-            {
+                User user = DBUserManager.AuthUser(u.UserName, Cryptography.HashPassword(u.Password));
                 Session["user"] = user;
                 return RedirectToAction("Index", "Home");
             }
-        }
+            return View(u);
+        }  
+
 
         [HttpGet]
         public ActionResult Logout()
