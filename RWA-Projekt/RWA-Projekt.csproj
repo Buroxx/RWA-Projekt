@@ -89,15 +89,6 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="CSS\ImageGalery.css" />
     <Content Include="Global.asax" />
-    <Content Include="Images\bijeli1.jpg" />
-    <Content Include="Images\bijeli2.jpg" />
-    <Content Include="Images\bijeli3.jpg" />
-    <Content Include="Images\plavi1.jpg" />
-    <Content Include="Images\plavi2.jpg" />
-    <Content Include="Images\plavi3.jpg" />
-    <Content Include="Images\zeleni1.jpg" />
-    <Content Include="Images\zeleni2.jpg" />
-    <Content Include="Images\zeleni3.jpg" />
     <Content Include="Login.aspx" />
     <Content Include="NewApartment.aspx" />
     <Content Include="AdminMasterPage.Master" />
