@@ -24,7 +24,14 @@ namespace RWA_Projekt
             }
 
 
-            listOfAllApartments = ((DBRepo)Application["database"]).GetAllApartments();
+            try
+            {
+                listOfAllApartments = ((DBRepo)Application["database"]).GetAllApartments();
+            }
+            catch (Exception)
+            {
+                Response.Redirect("AdministratorApartments.aspx");
+            }
 
             if (!IsPostBack)
             {

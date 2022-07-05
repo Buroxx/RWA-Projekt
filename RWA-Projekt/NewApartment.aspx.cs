@@ -38,8 +38,15 @@ namespace RWA_Projekt
         private void LoadData()
         {
             User owner = (User)Session["user"];
-            cities = ((DBRepo)Application["database"]).GetAllCities();
-            owners = ((DBRepo)Application["database"]).GetAllOwners();
+            try
+            {
+                cities = ((DBRepo)Application["database"]).GetAllCities();
+                owners = ((DBRepo)Application["database"]).GetAllOwners();
+            }
+            catch (Exception)
+            {
+                Response.Redirect("AdministratorApartments.aspx");
+            }
 
             finishAddingTags.Visible = false;
             pnlAddNewPicture.Visible = false;

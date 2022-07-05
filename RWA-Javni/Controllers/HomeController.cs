@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 
 namespace RWA_Javni.Controllers
@@ -16,7 +17,7 @@ namespace RWA_Javni.Controllers
 
         public ActionResult Index(string sortOrder)
         {
-           
+
             IList<City> cities = new List<City>();
             IList<Apartment> apartments = new List<Apartment>();
             IList<ApartmentPicture> pictureList = new List<ApartmentPicture>();

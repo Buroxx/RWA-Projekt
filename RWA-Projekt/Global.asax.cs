@@ -41,7 +41,7 @@ namespace RWA_Projekt
 
         protected void Application_Error(object sender, EventArgs e)
         {
-
+            Response.Redirect("AdministratorApartments.aspx");
         }
 
         protected void Session_End(object sender, EventArgs e)

@@ -34,7 +34,14 @@ namespace RWA_Projekt
 
         private void LoadData()
         {
-            users = ((DBRepo)Application["database"]).GetAllUsers();
+            try
+            {
+                users = ((DBRepo)Application["database"]).GetAllUsers();
+            }
+            catch (Exception)
+            {
+                Response.Redirect("AdministratorApartments.aspx");
+            }
             rptUsers.DataSource = users;
             rptUsers.DataBind();
             ViewState["users"] = users;

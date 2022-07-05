@@ -31,12 +31,26 @@ namespace RWA_Projekt
 
         private void LoadData()
         {
-            tags = ((DBRepo)Application["database"]).GetAllTags();
+            try
+            {
+                tags = ((DBRepo)Application["database"]).GetAllTags();
+            }
+            catch (Exception)
+            {
+                Response.Redirect("AdministratorApartments.aspx");
+            }
             gvTags.DataSource = tags;
             gvTags.DataBind();
             
             IList<String> tagTypes = new List<String>();
-            tagTypes = ((DBRepo)Application["database"]).GetAllTagTypes();
+            try
+            {
+                tagTypes = ((DBRepo)Application["database"]).GetAllTagTypes();
+            }
+            catch (Exception)
+            {
+                Response.Redirect("AdministratorApartments.aspx");
+            }
             int counter = 0;
             foreach (string tag in tagTypes)
             {
