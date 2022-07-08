@@ -69,6 +69,11 @@ namespace RWA_Javni.Models.DBRepo
             }
 
             int total = 0;
+            foreach (ApartmentReview rev in reviews)
+            {
+                total += rev.Stars;
+            }
+            
             return total/reviews.Count;
 
         }
