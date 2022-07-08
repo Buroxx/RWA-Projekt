@@ -35,6 +35,10 @@ namespace rwaLib.Models
         {
             get
             {
+                if (UserName.Split().Length < 2)
+                {
+                    return String.Empty;
+                }
                 return UserName.Split(' ')[0];
             }
         }
@@ -43,6 +47,10 @@ namespace rwaLib.Models
         {
             get
             {
+                if (UserName.Split().Length < 2)
+                {
+                    return String.Empty;
+                }
                 return UserName.Split(' ')[1];
             }
         }

@@ -64,16 +64,16 @@
     <br />
     @if (apartments != null)
     {
-        <div class="d-flex flex-row flex-wrap justify-content-around" style="margin:0 auto">
+        <div class="d-flex flex-row flex-wrap justify-content-between">
             @foreach (Apartment apartment in apartments)
             {
-                <div class="d-flex" style="width:400px; height:300px;">
+                <div class="d-flex" style="width:410px; height:300px;">
                     <div>
                         @foreach (ApartmentPicture picture in pictureList)
                         {
                             if (apartment.Id == picture.ApartmentId && picture.IsRepresentative)
                             {
-                                <img src="@picture.Path" width="350" height="300" style="object-fit:cover" />
+                                <img src="@picture.Path" width="350" height="300" style="object-fit:cover;" />
                             }
                         }
                     </div>

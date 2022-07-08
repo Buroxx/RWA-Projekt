@@ -58,6 +58,11 @@ namespace RWA_Projekt
             ddlStatus.Items.Insert(2, "Vacant");
             ddlStatus.SelectedIndex = 2;
 
+            if (Session["ApartmentID"] == null)
+            {
+                Response.Redirect("AdministratorApartments.aspx");
+            }
+
             apartmentID = (int)Session["ApartmentID"];
             apartment = ((DBRepo)Application["database"]).GetApartmentByID(apartmentID);
             LoadFormInfo(apartment);
@@ -386,6 +391,7 @@ namespace RWA_Projekt
             {
             FileUpload.SaveAs(fullPath); 
             }
+
             ((DBRepo)Application["database"]).SaveNewPicture(apartmentID, forDataBase);
             Response.Redirect("ViewApartment.aspx");
         }

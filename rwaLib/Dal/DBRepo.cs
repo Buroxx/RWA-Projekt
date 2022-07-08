@@ -384,6 +384,11 @@ namespace rwaLib.Dal
             return apartments;
         }
 
+        public void TestNewPicture(int apartmentID, string forDataBase, byte[] bytes)
+        {
+            SqlHelper.ExecuteNonQuery(CS, nameof(TestNewPicture), apartmentID, forDataBase, bytes);
+        }
+
         public void UnregisteredApartmentReservation(User u, string details, int apartmentID)
         {
             SqlHelper.ExecuteNonQuery(CS, nameof(UnregisteredApartmentReservation), u.UserName, u.Email, u.PhoneNumber, u.Address, details, apartmentID);
