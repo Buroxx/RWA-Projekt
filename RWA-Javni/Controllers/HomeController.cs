@@ -18,11 +18,11 @@ namespace RWA_Javni.Controllers
         public ActionResult Index(string sortOrder)
         {
 
-            IList<City> cities = new List<City>();
+            //IList<City> cities = new List<City>();
             IList<Apartment> apartments = new List<Apartment>();
             IList<ApartmentPicture> pictureList = new List<ApartmentPicture>();
 
-            cities = DBCityManager.GetAllCities();
+            //cities = DBCityManager.GetAllCities();
             apartments = DBApartmentManager.GetAllApartments();
             pictureList = DBPictureManager.GetAllApartmentPictures();
 

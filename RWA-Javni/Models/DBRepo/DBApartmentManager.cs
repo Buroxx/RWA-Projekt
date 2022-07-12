@@ -32,13 +32,14 @@ namespace RWA_Javni.Models.DBRepo
                     Price = row[nameof(Apartment.Price)].ToString().Substring(0, 3),
                     StatusId = row[nameof(Apartment.StatusId)].ToString(),
                     BeachDistance = row[nameof(Apartment.BeachDistance)].ToString(),
-                    Review = GetApartmentReviews((int)row[nameof(Apartment.Id)])
+                    Review = GetApartmentReviews((int)row[nameof(Apartment.Id)]),
+                    CityId = (int)row[nameof(Apartment.CityId)]
                 });
             }
 
             foreach (Apartment apart in apartments)
             {
-                apart.City = DBCityManager.GetCityByID(apart.Id);
+                apart.City = DBCityManager.GetCityByID(apart.CityId);
             }
 
 
@@ -93,7 +94,8 @@ namespace RWA_Javni.Models.DBRepo
             apartment.MaxChildren = (int)row[nameof(Apartment.MaxChildren)];
             apartment.TotalRooms = (int)row[nameof(Apartment.TotalRooms)];
             apartment.Price = row[nameof(Apartment.Price)].ToString();
-            apartment.City = GetCityByID(apartment.Id);
+            apartment.CityId = (int)row[nameof(Apartment.CityId)];
+            apartment.City = GetCityByID(apartment.CityId);
             apartment.StatusId = row[nameof(Apartment.StatusId)].ToString();
             apartment.BeachDistance = row[nameof(Apartment.BeachDistance)].ToString();
             apartment.OwnerID = (int)row[nameof(Apartment.OwnerID)];
