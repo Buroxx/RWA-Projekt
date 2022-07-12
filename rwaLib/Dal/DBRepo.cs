@@ -33,13 +33,14 @@ namespace rwaLib.Dal
                     Price = row[nameof(Apartment.Price)].ToString().Substring(0, 3),
                     StatusId = row[nameof(Apartment.StatusId)].ToString(),
                     BeachDistance = row[nameof(Apartment.BeachDistance)].ToString(),
-                    NumberOfPictures = GetNumberOfPictures((int)row[nameof(Apartment.Id)])
+                    NumberOfPictures = GetNumberOfPictures((int)row[nameof(Apartment.Id)]),
+                    CityId = (int)row[nameof(Apartment.CityId)]
                 });
             }
 
             foreach (Apartment apart in apartments)
             {
-                apart.City = GetCityByID(apart.Id);
+                apart.City = GetCityByID(apart.CityId);
             }
 
 
